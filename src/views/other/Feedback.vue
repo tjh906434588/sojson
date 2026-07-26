@@ -9,44 +9,49 @@
       </template>
       
       <div class="feedback-content">
-        <el-form :model="form" label-width="120px">
-          <el-form-item :label="$t('tools.feedback.type')">
-            <el-select v-model="form.type">
-              <el-option :label="$t('tools.feedback.bugReport')" value="bug" />
-              <el-option :label="$t('tools.feedback.featureRequest')" value="feature" />
-              <el-option :label="$t('tools.feedback.general')" value="general" />
-              <el-option :label="$t('tools.feedback.toolSuggestion')" value="suggestion" />
-            </el-select>
-          </el-form-item>
-          
-          <el-form-item :label="$t('tools.feedback.toolName')" v-if="form.type !== 'general'">
-            <el-input v-model="form.toolName" :placeholder="$t('tools.feedback.toolNamePlaceholder')" />
-          </el-form-item>
-          
-          <el-form-item :label="$t('tools.feedback.rating')">
-            <el-rate v-model="form.rating" show-text :texts="rateText" />
-          </el-form-item>
-          
-          <el-form-item :label="$t('tools.feedback.feedback')">
-            <el-input 
-              v-model="form.feedback" 
-              type="textarea" 
-              :rows="6" 
-              :placeholder="$t('tools.feedback.feedbackPlaceholder')"
-            />
-          </el-form-item>
-          
-          <el-form-item :label="$t('tools.feedback.email')">
-            <el-input v-model="form.email" :placeholder="$t('tools.feedback.emailPlaceholder')" />
-          </el-form-item>
-          
-          <el-form-item>
-            <div class="button-group">
-              <el-button type="primary" @click="submit">{{ $t('tools.feedback.submit') }}</el-button>
-              <el-button @click="reset">{{ $t('common.reset') }}</el-button>
-            </div>
-          </el-form-item>
-        </el-form>
+        <form netlify>
+          <input type="hidden" name="form-name" value="suggestion" />
+          <el-form :model="form" label-width="120px">
+            <el-form-item :label="$t('tools.feedback.type')">
+              <el-select v-model="form.type" name="feedback-type">
+                <el-option :label="$t('tools.feedback.bugReport')" value="bug" />
+                <el-option :label="$t('tools.feedback.featureRequest')" value="feature" />
+                <el-option :label="$t('tools.feedback.general')" value="general" />
+                <el-option :label="$t('tools.feedback.toolSuggestion')" value="suggestion" />
+              </el-select>
+            </el-form-item>
+            
+            <el-form-item :label="$t('tools.feedback.toolName')" v-if="form.type !== 'general'">
+              <el-input v-model="form.toolName" :placeholder="$t('tools.feedback.toolNamePlaceholder')" name="tool-name" />
+            </el-form-item>
+            
+            <el-form-item :label="$t('tools.feedback.rating')">
+              <el-rate v-model="form.rating" show-text :texts="rateText" />
+              <input type="hidden" name="rating" :value="form.rating" />
+            </el-form-item>
+            
+            <el-form-item :label="$t('tools.feedback.feedback')">
+              <el-input 
+                v-model="form.feedback" 
+                type="textarea" 
+                :rows="6" 
+                :placeholder="$t('tools.feedback.feedbackPlaceholder')"
+                name="feedback-content"
+              />
+            </el-form-item>
+            
+            <el-form-item :label="$t('tools.feedback.email')">
+              <el-input v-model="form.email" :placeholder="$t('tools.feedback.emailPlaceholder')" name="email" />
+            </el-form-item>
+            
+            <el-form-item>
+              <div class="button-group">
+                <el-button type="primary" @click="submit">{{ $t('tools.feedback.submit') }}</el-button>
+                <el-button @click="reset">{{ $t('common.reset') }}</el-button>
+              </div>
+            </el-form-item>
+          </el-form>
+        </form>
         
         <el-divider />
         
