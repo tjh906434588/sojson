@@ -100,11 +100,24 @@ const form = reactive({
   email: ''
 })
 
-const submit = () => {
+const submit = async () => {
   if (!form.feedback) {
     ElMessage.warning(t('tools.feedback.provideFeedback'))
     return
   }
+  
+  const formData = new FormData()
+  formData.append('form-name', 'suggestion')
+  formData.append('feedback-type', form.type)
+  formData.append('tool-name', form.toolName)
+  formData.append('rating', form.rating)
+  formData.append('feedback-content', form.feedback)
+  formData.append('email', form.email)
+  
+  await fetch('/', {
+    method: 'POST',
+    body: formData
+  })
   
   ElMessage.success(t('tools.feedback.thankYou'))
   reset()
