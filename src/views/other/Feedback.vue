@@ -9,14 +9,20 @@
       </template>
       
       <div class="feedback-content">
-        <form :name="FEEDBACK_FORM_NAME" method="POST" data-netlify="true" @submit.prevent="submit">
+        <form
+          class="feedback-form el-form el-form--default el-form--label-right"
+          :name="FEEDBACK_FORM_NAME"
+          method="POST"
+          data-netlify="true"
+          @submit.prevent="submit"
+        >
           <input type="hidden" name="form-name" :value="FEEDBACK_FORM_NAME" />
-          <el-form :model="form" label-width="120px">
-            <el-form-item
-              v-for="field in visibleFields"
-              :key="field.key"
-              :label="$t(field.labelKey)"
-            >
+          <el-form-item
+            v-for="field in visibleFields"
+            :key="field.key"
+            :label="$t(field.labelKey)"
+            label-width="120px"
+          >
               <el-select v-if="field.kind === 'select'" v-model="form[field.key]" :name="field.name">
                 <el-option
                   v-for="option in field.options"
@@ -50,13 +56,12 @@
               />
             </el-form-item>
             
-            <el-form-item>
-              <div class="button-group">
-                <el-button type="primary" native-type="submit">{{ $t('tools.feedback.submit') }}</el-button>
-                <el-button @click="reset">{{ $t('common.reset') }}</el-button>
-              </div>
-            </el-form-item>
-          </el-form>
+          <el-form-item label-width="120px">
+            <div class="button-group">
+              <el-button type="primary" native-type="submit">{{ $t('tools.feedback.submit') }}</el-button>
+              <el-button @click="reset" native-type="button">{{ $t('common.reset') }}</el-button>
+            </div>
+          </el-form-item>
         </form>
         
         <el-divider />
