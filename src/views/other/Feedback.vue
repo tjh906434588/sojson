@@ -9,44 +9,50 @@
       </template>
       
       <div class="feedback-content">
-        <form netlify>
-          <input type="hidden" name="form-name" value="suggestion" />
+        <form :name="FEEDBACK_FORM_NAME" method="POST" data-netlify="true" @submit.prevent="submit">
+          <input type="hidden" name="form-name" :value="FEEDBACK_FORM_NAME" />
           <el-form :model="form" label-width="120px">
-            <el-form-item :label="$t('tools.feedback.type')">
-              <el-select v-model="form.type" name="feedback-type">
-                <el-option :label="$t('tools.feedback.bugReport')" value="bug" />
-                <el-option :label="$t('tools.feedback.featureRequest')" value="feature" />
-                <el-option :label="$t('tools.feedback.general')" value="general" />
-                <el-option :label="$t('tools.feedback.toolSuggestion')" value="suggestion" />
+            <el-form-item
+              v-for="field in visibleFields"
+              :key="field.key"
+              :label="$t(field.labelKey)"
+            >
+              <el-select v-if="field.kind === 'select'" v-model="form[field.key]" :name="field.name">
+                <el-option
+                  v-for="option in field.options"
+                  :key="option.value"
+                  :label="$t(option.labelKey)"
+                  :value="option.value"
+                />
               </el-select>
-            </el-form-item>
-            
-            <el-form-item :label="$t('tools.feedback.toolName')" v-if="form.type !== 'general'">
-              <el-input v-model="form.toolName" :placeholder="$t('tools.feedback.toolNamePlaceholder')" name="tool-name" />
-            </el-form-item>
-            
-            <el-form-item :label="$t('tools.feedback.rating')">
-              <el-rate v-model="form.rating" show-text :texts="rateText" />
-              <input type="hidden" name="rating" :value="form.rating" />
-            </el-form-item>
-            
-            <el-form-item :label="$t('tools.feedback.feedback')">
-              <el-input 
-                v-model="form.feedback" 
-                type="textarea" 
-                :rows="6" 
-                :placeholder="$t('tools.feedback.feedbackPlaceholder')"
-                name="feedback-content"
+
+              <el-rate
+                v-else-if="field.kind === 'rate'"
+                v-model="form[field.key]"
+                show-text
+                :texts="rateText"
               />
-            </el-form-item>
-            
-            <el-form-item :label="$t('tools.feedback.email')">
-              <el-input v-model="form.email" :placeholder="$t('tools.feedback.emailPlaceholder')" name="email" />
+
+              <input
+                v-if="field.kind === 'rate'"
+                type="hidden"
+                :name="field.name"
+                :value="form[field.key]"
+              />
+
+              <el-input
+                v-if="field.kind === 'input' || field.kind === 'textarea'"
+                v-model="form[field.key]"
+                :name="field.name"
+                :type="field.kind === 'textarea' ? 'textarea' : 'text'"
+                :rows="field.rows"
+                :placeholder="field.placeholderKey ? $t(field.placeholderKey) : ''"
+              />
             </el-form-item>
             
             <el-form-item>
               <div class="button-group">
-                <el-button type="primary" @click="submit">{{ $t('tools.feedback.submit') }}</el-button>
+                <el-button type="primary" native-type="submit">{{ $t('tools.feedback.submit') }}</el-button>
                 <el-button @click="reset">{{ $t('common.reset') }}</el-button>
               </div>
             </el-form-item>
@@ -82,6 +88,8 @@ import { reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 
+import { FEEDBACK_FORM_NAME, createFeedbackFormState, feedbackFields } from '../../config/feedbackForm'
+
 const { t } = useI18n()
 
 const rateText = computed(() => [
@@ -92,31 +100,29 @@ const rateText = computed(() => [
   t('tools.feedback.excellent')
 ])
 
-const form = reactive({
-  type: 'general',
-  toolName: '',
-  rating: 0,
-  feedback: '',
-  email: ''
+const form = reactive(createFeedbackFormState())
+
+const visibleFields = computed(() => {
+  return feedbackFields.filter((field) => !field.visibleWhen || field.visibleWhen(form))
 })
 
 const submit = async () => {
-  if (!form.feedback) {
+  const requiredField = feedbackFields.find((field) => field.required && !form[field.key])
+  if (requiredField) {
     ElMessage.warning(t('tools.feedback.provideFeedback'))
     return
   }
   
-  const formData = new FormData()
-  formData.append('form-name', 'suggestion')
-  formData.append('feedback-type', form.type)
-  formData.append('tool-name', form.toolName)
-  formData.append('rating', form.rating)
-  formData.append('feedback-content', form.feedback)
-  formData.append('email', form.email)
+  const formData = new URLSearchParams()
+  formData.append('form-name', FEEDBACK_FORM_NAME)
+  feedbackFields.forEach((field) => {
+    formData.append(field.name, form[field.key])
+  })
   
-  await fetch('/', {
+  await fetch('/__forms.html', {
     method: 'POST',
-    body: formData
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData.toString()
   })
   
   ElMessage.success(t('tools.feedback.thankYou'))
@@ -124,11 +130,7 @@ const submit = async () => {
 }
 
 const reset = () => {
-  form.type = 'general'
-  form.toolName = ''
-  form.rating = 0
-  form.feedback = ''
-  form.email = ''
+  Object.assign(form, createFeedbackFormState())
 }
 </script>
 
