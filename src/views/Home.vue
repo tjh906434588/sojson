@@ -30,7 +30,9 @@ const tools = ref([
   { path: '/json/json-online-view', icon: 'View', title: 'menu.jsonOnlineView', desc: 'tools.jsonOnlineView.description', color: '#909399' },
   { path: '/json/json-color', icon: 'MagicStick', title: 'menu.jsonColor', desc: 'tools.jsonColor.description', color: '#7c3aed' },
   { path: '/json/json-xml', icon: 'Switch', title: 'menu.jsonXmlConvert', desc: 'tools.jsonXml.description', color: '#e6a23c' },
-  { path: '/json/json-compare', icon: 'Tickets', title: 'menu.jsonCompare', desc: 'tools.jsonCompare.description', color: '#9c27b0' }
+  { path: '/json/json-compare', icon: 'Tickets', title: 'menu.jsonCompare', desc: 'tools.jsonCompare.description', color: '#9c27b0' },
+  { path: '/json/json-entity', icon: 'Files', title: 'menu.jsonEntity', desc: 'tools.jsonEntity.description', color: '#13c2c2' },
+  { path: '/json/json-excel', icon: 'Grid', title: 'menu.jsonExcel', desc: 'tools.jsonExcel.description', color: '#1e80ff' }
 ])
 </script>
 

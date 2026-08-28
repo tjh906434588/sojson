@@ -47,6 +47,16 @@ const routes = [
     component: () => import('../views/json/JsonCompare.vue')
   },
   {
+    path: '/json/json-entity',
+    name: 'JsonEntity',
+    component: () => import('../views/json/JsonEntity.vue')
+  },
+  {
+    path: '/json/json-excel',
+    name: 'JsonExcel',
+    component: () => import('../views/json/JsonExcel.vue')
+  },
+  {
     path: '/encrypt/encrypt-decrypt',
     name: 'EncryptDecrypt',
     component: () => import('../views/encrypt/EncryptDecrypt.vue')
