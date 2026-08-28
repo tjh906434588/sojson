@@ -7,127 +7,90 @@
           <span class="logo-text">{{ $t('common.title') }}</span>
         </router-link>
       </div>
-      
+
       <div class="navbar-menu" :class="{ 'is-active': isMobileMenuOpen }">
-        <el-menu 
-          :default-active="activeMenu" 
-          mode="horizontal" 
+        <el-menu
+          :default-active="activeMenu"
+          :mode="isMobile ? 'vertical' : 'horizontal'"
           :ellipsis="false"
           @select="handleMenuSelect"
           class="nav-menu"
         >
-          <el-sub-menu index="1">
-            <template #title>{{ $t('menu.jsonTools') }}</template>
+          <template v-if="isMobile">
+            <div class="mobile-menu-group">
+              <div class="mobile-menu-top" :class="{ 'is-active': isJsonActive }">
+                <div class="mobile-menu-label" @click="goJsonList">
+                  <el-icon><Tools /></el-icon>
+                  <span>{{ $t('menu.jsonTools') }}</span>
+                </div>
+                <el-icon class="mobile-menu-toggle" @click="toggleMobileSubMenu">
+                  <ArrowDown v-if="!mobileSubOpen" />
+                  <ArrowUp v-else />
+                </el-icon>
+              </div>
+              <template v-if="mobileSubOpen">
+                <el-menu-item index="/json/json-parse" class="mobile-sub-item">{{ $t('menu.jsonParse') }}</el-menu-item>
+                <el-menu-item index="/json/json-online-parse" class="mobile-sub-item">{{ $t('menu.jsonOnlineParse') }}</el-menu-item>
+                <el-menu-item index="/json/json-compress-escape" class="mobile-sub-item">{{ $t('menu.jsonCompressEscape') }}</el-menu-item>
+                <el-menu-item index="/json/json-online-view" class="mobile-sub-item">{{ $t('menu.jsonOnlineView') }}</el-menu-item>
+                <el-menu-item index="/json/json-color" class="mobile-sub-item">{{ $t('menu.jsonColor') }}</el-menu-item>
+                <el-menu-item index="/json/json-xml" class="mobile-sub-item">{{ $t('menu.jsonXmlConvert') }}</el-menu-item>
+                <el-menu-item index="/json/json-compare" class="mobile-sub-item">{{ $t('menu.jsonCompare') }}</el-menu-item>
+              </template>
+            </div>
+          </template>
+          <el-sub-menu v-else index="json">
+            <template #title>
+              <div class="json-menu-title" @click="goJsonList">
+                <el-icon><Tools /></el-icon>
+                <span>{{ $t('menu.jsonTools') }}</span>
+              </div>
+            </template>
             <el-menu-item index="/json/json-parse">{{ $t('menu.jsonParse') }}</el-menu-item>
-            <el-menu-item index="/json/json-compress">{{ $t('menu.jsonCompress') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="2">
-            <template #title>{{ $t('menu.encryptDecrypt') }}</template>
-            <el-menu-item index="/encrypt/encrypt-decrypt">{{ $t('menu.encrypt') }}</el-menu-item>
-            <el-menu-item index="/encrypt/hash">{{ $t('menu.hash') }}</el-menu-item>
-            <el-menu-item index="/encrypt/base64">{{ $t('menu.base64') }}</el-menu-item>
-            <el-menu-item index="/encrypt/image-base64">{{ $t('menu.imageBase64') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="3">
-            <template #title>{{ $t('menu.compressFormat') }}</template>
-            <el-menu-item index="/compress/js-html-format">{{ $t('menu.jsHtmlFormat') }}</el-menu-item>
-            <el-menu-item index="/compress/js-format">{{ $t('menu.jsFormat') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="4">
-            <template #title>{{ $t('menu.documents') }}</template>
-            <el-menu-item index="/document/mime-type">{{ $t('menu.mimeType') }}</el-menu-item>
-            <el-menu-item index="/document/html-escape">{{ $t('menu.htmlEscape') }}</el-menu-item>
-            <el-menu-item index="/document/rgb-color">{{ $t('menu.rgbColor') }}</el-menu-item>
-            <el-menu-item index="/document/public-dns">{{ $t('menu.publicDns') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="5">
-            <template #title>{{ $t('menu.frontend') }}</template>
-            <el-menu-item index="/frontend/color-picker">{{ $t('menu.colorPicker') }}</el-menu-item>
-            <el-menu-item index="/frontend/web-colors">{{ $t('menu.webColors') }}</el-menu-item>
-            <el-menu-item index="/frontend/image-color">{{ $t('menu.imageColor') }}</el-menu-item>
-            <el-menu-item index="/frontend/web-safe-color">{{ $t('menu.webSafeColor') }}</el-menu-item>
-            <el-menu-item index="/frontend/color-selector">{{ $t('menu.colorSelector') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="6">
-            <template #title>{{ $t('menu.convert') }}</template>
-            <el-menu-item index="/convert/case-convert">{{ $t('menu.caseConvert') }}</el-menu-item>
-            <el-menu-item index="/convert/full-half-convert">{{ $t('menu.fullHalfConvert') }}</el-menu-item>
-            <el-menu-item index="/convert/lang-convert">{{ $t('menu.langConvert') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="7">
-            <template #title>{{ $t('menu.qrcode') }}</template>
-            <el-menu-item index="/qrcode/qrcode-gen">{{ $t('menu.qrcodeGen') }}</el-menu-item>
-            <el-menu-item index="/qrcode/qrcode-beautify">{{ $t('menu.qrcodeBeautify') }}</el-menu-item>
-            <el-menu-item index="/qrcode/qrcode-parse">{{ $t('menu.qrcodeParse') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="8">
-            <template #title>{{ $t('menu.webmaster') }}</template>
-            <el-menu-item index="/webmaster/linux-cmd">{{ $t('menu.linuxCmd') }}</el-menu-item>
-            <el-menu-item index="/webmaster/seo-tool">{{ $t('menu.seoTool') }}</el-menu-item>
-            <el-menu-item index="/webmaster/js-lib">{{ $t('menu.jsLib') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="9">
-            <template #title>{{ $t('menu.lifeTool') }}</template>
-            <el-menu-item index="/life/date-calc">{{ $t('menu.dateCalc') }}</el-menu-item>
-            <el-menu-item index="/life/stopwatch">{{ $t('menu.stopwatch') }}</el-menu-item>
-            <el-menu-item index="/life/festival">{{ $t('menu.festival') }}</el-menu-item>
-            <el-menu-item index="/life/postal-code">{{ $t('menu.postalCode') }}</el-menu-item>
-            <el-menu-item index="/life/mix-rate">{{ $t('menu.mixRate') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="10">
-            <template #title>{{ $t('menu.culture') }}</template>
-            <el-menu-item index="/culture/periodic-table">{{ $t('menu.periodicTable') }}</el-menu-item>
-            <el-menu-item index="/culture/sentence-trans">{{ $t('menu.sentenceTrans') }}</el-menu-item>
-          </el-sub-menu>
-          
-          <el-sub-menu index="11">
-            <template #title>{{ $t('menu.otherTools') }}</template>
-            <el-menu-item index="/other/algebra">{{ $t('menu.algebra') }}</el-menu-item>
-            <el-menu-item index="/other/image-tool">{{ $t('menu.imageTool') }}</el-menu-item>
-            <el-menu-item index="/other/sudoku">{{ $t('menu.sudoku') }}</el-menu-item>
-            <el-menu-item index="/other/about">{{ $t('menu.about') }}</el-menu-item>
-            <el-menu-item index="/other/privacy">{{ $t('menu.privacy') }}</el-menu-item>
-            <el-menu-item index="/other/contact">{{ $t('menu.contact') }}</el-menu-item>
-            <el-menu-item index="/other/feedback">{{ $t('menu.feedback') }}</el-menu-item>
+            <el-menu-item index="/json/json-online-parse">{{ $t('menu.jsonOnlineParse') }}</el-menu-item>
+            <el-menu-item index="/json/json-compress-escape">{{ $t('menu.jsonCompressEscape') }}</el-menu-item>
+            <el-menu-item index="/json/json-online-view">{{ $t('menu.jsonOnlineView') }}</el-menu-item>
+            <el-menu-item index="/json/json-color">{{ $t('menu.jsonColor') }}</el-menu-item>
+            <el-menu-item index="/json/json-xml">{{ $t('menu.jsonXmlConvert') }}</el-menu-item>
+            <el-menu-item index="/json/json-compare">{{ $t('menu.jsonCompare') }}</el-menu-item>
           </el-sub-menu>
         </el-menu>
       </div>
-      
+
       <div class="navbar-right">
-        <el-select 
-          v-model="selectedLang" 
-          @change="handleLanguageChange" 
+        <el-select
+          v-model="selectedLang"
+          @change="handleLanguageChange"
           class="lang-selector"
         >
           <el-option :label="$t('common.zh_CN')" value="zh" />
           <el-option :label="$t('common.en_US')" value="en" />
         </el-select>
-        <el-button 
-          :icon="Menu" 
-          circle 
+        <el-button
+          :icon="Menu"
+          circle
           @click="toggleMobileMenu"
           class="mobile-menu-button"
         />
       </div>
     </div>
+
+    <!-- H5：菜单展开时覆盖下方页面，聚焦菜单 -->
+    <div
+      v-if="isMobile"
+      class="menu-mask"
+      :class="{ 'is-active': isMobileMenuOpen }"
+      @click="toggleMobileMenu"
+    ></div>
   </header>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAppStore } from '../store/app'
-import { Menu, Tools } from '@element-plus/icons-vue'
+import { ArrowDown, ArrowUp, Menu, Tools } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -136,9 +99,28 @@ const appStore = useAppStore()
 
 const selectedLang = ref(locale.value)
 const isMobileMenuOpen = ref(false)
+const mobileSubOpen = ref(false)
 const isMobile = ref(false)
 
-const activeMenu = computed(() => route.path)
+const activeMenu = computed(() => {
+  if (route.path === '/' || route.path === '/json') {
+    return isMobile.value ? '/json' : 'json'
+  }
+  if (route.path.startsWith('/json')) return route.path
+  return route.path
+})
+
+// H5：一级菜单高亮（在首页或 /json 时）
+const isJsonActive = computed(() => {
+  return isMobile.value && (route.path === '/' || route.path === '/json')
+})
+
+const goJsonList = () => {
+  router.push('/json')
+  if (isMobile.value) {
+    isMobileMenuOpen.value = false
+  }
+}
 
 const handleLanguageChange = (lang) => {
   locale.value = lang
@@ -148,6 +130,16 @@ const handleLanguageChange = (lang) => {
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
 }
+
+// H5：点一级菜单右侧图标，只展开/收起二级菜单，不跳转
+const toggleMobileSubMenu = () => {
+  mobileSubOpen.value = !mobileSubOpen.value
+}
+
+// 菜单收起时，同时收起二级菜单，保证下次打开默认是折叠状态
+watch(isMobileMenuOpen, (v) => {
+  if (!v) mobileSubOpen.value = false
+})
 
 const handleMenuSelect = (index) => {
   router.push(index)
@@ -183,6 +175,7 @@ onUnmounted(() => {
   max-width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .navbar-container {
@@ -201,13 +194,13 @@ onUnmounted(() => {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  
+
   .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
     color: #409eff;
-    
+
     .logo-text {
       margin-left: 8px;
       font-size: 20px;
@@ -228,25 +221,25 @@ onUnmounted(() => {
   max-width: calc(100% - 300px);
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
-  
+
   &::-webkit-scrollbar {
     height: 0;
   }
-  
+
   &:hover {
     scrollbar-width: thin;
     scrollbar-color: #c0c4cc transparent;
-    
+
     &::-webkit-scrollbar {
       height: 4px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: #c0c4cc;
       border-radius: 2px;
     }
   }
-  
+
   .nav-menu {
     border-bottom: none;
     display: flex;
@@ -255,17 +248,24 @@ onUnmounted(() => {
   }
 }
 
+.json-menu-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+}
+
 .navbar-right {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 10px;
   margin-left: 10px;
-  
+
   .lang-selector {
     width: 100px;
   }
-  
+
   .mobile-menu-button {
     display: none;
   }
@@ -276,14 +276,14 @@ onUnmounted(() => {
     height: auto;
     min-height: 60px;
   }
-  
+
   .navbar-container {
     height: auto;
     min-height: 60px;
     padding: 0 15px;
     flex-wrap: wrap;
   }
-  
+
   .navbar-menu {
     position: fixed;
     top: 60px;
@@ -292,45 +292,118 @@ onUnmounted(() => {
     background: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 0;
-    padding: 20px;
+    padding: 10px 15px;
     transform: translateY(-100%);
     opacity: 0;
     transition: all 0.3s ease;
     pointer-events: none;
     z-index: 999;
-    max-height: calc(100vh - 60px);
+    max-height: 40vh;
     overflow-y: auto;
+    // 提前预留滚动条宽度，避免展开二级菜单出现滚动条时内容被顶得错位
+    scrollbar-gutter: stable;
     max-width: 100%;
     flex-wrap: wrap;
     justify-content: flex-start;
-    
+
     &.is-active {
       transform: translateY(0);
       opacity: 1;
       pointer-events: auto;
     }
-    
-    :deep(.el-menu) {
-      flex-direction: column;
+
+    .nav-menu {
+      display: block;
+      width: 100%;
+      flex-wrap: wrap;
+      white-space: normal;
       border-right: none;
     }
-    
-    :deep(.el-sub-menu) {
-      .el-menu {
-        box-shadow: none;
-        border: none;
+
+    .mobile-menu-group {
+      width: 100%;
+    }
+
+    .mobile-menu-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      cursor: pointer;
+      user-select: none;
+
+      &.is-active {
+        // 与二级菜单选中态保持一致：仅文字与左侧图标变蓝，无背景
+        color: #409eff;
+      }
+
+      .mobile-menu-label {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        height: 100%;
         padding-left: 20px;
+
+        :deep(.el-icon) {
+          margin-right: 6px;
+        }
+      }
+
+      .mobile-menu-toggle {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 0 16px;
+        color: #909399;
+        cursor: pointer;
+
+        // 防止 el-icon 内的箭头 SVG 在窄容器里被 flex 压缩成 0 宽（不可见）
+        :deep(svg) {
+          width: 16px;
+          height: 16px;
+          flex-shrink: 0;
+        }
+
+        &:hover {
+          color: #409eff;
+        }
       }
     }
+
+    .mobile-sub-item {
+      // 对齐一级菜单文字的第 2 个字符位置（一级文字起点约 50px + 1 个字符宽）
+      padding-left: 58px !important;
+    }
   }
-  
+
+  // 菜单展开时的遮罩，覆盖除菜单外的页面区域
+  .menu-mask {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 998; // 低于菜单 999，高于页面内容
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+
+    &.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
   .navbar-right {
     .mobile-menu-button {
       display: flex;
     }
-    
+
     .lang-selector {
-      width: 80px;
+      width: 110px;
     }
   }
 }

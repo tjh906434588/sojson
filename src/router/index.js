@@ -7,14 +7,44 @@ const routes = [
     component: () => import('../views/Home.vue')
   },
   {
+    path: '/json',
+    name: 'JsonTools',
+    component: () => import('../views/Home.vue')
+  },
+  {
     path: '/json/json-parse',
     name: 'JsonParse',
     component: () => import('../views/json/JsonParse.vue')
   },
   {
-    path: '/json/json-compress',
-    name: 'JsonCompress',
-    component: () => import('../views/json/JsonCompress.vue')
+    path: '/json/json-online-parse',
+    name: 'JsonOnlineParse',
+    component: () => import('../views/json/JsonOnlineParse.vue')
+  },
+  {
+    path: '/json/json-compress-escape',
+    name: 'JsonCompressEscape',
+    component: () => import('../views/json/JsonCompressEscape.vue')
+  },
+  {
+    path: '/json/json-online-view',
+    name: 'JsonOnlineView',
+    component: () => import('../views/json/JsonOnlineView.vue')
+  },
+  {
+    path: '/json/json-color',
+    name: 'JsonColor',
+    component: () => import('../views/json/JsonColor.vue')
+  },
+  {
+    path: '/json/json-xml',
+    name: 'JsonXml',
+    component: () => import('../views/json/JsonXml.vue')
+  },
+  {
+    path: '/json/json-compare',
+    name: 'JsonCompare',
+    component: () => import('../views/json/JsonCompare.vue')
   },
   {
     path: '/encrypt/encrypt-decrypt',

@@ -18,6 +18,7 @@
   color: white;
   padding: 20px 0;
   margin-top: auto;
+  flex-shrink: 0;
 }
 
 .footer-container {

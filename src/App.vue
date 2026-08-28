@@ -29,24 +29,27 @@ const currentLocale = computed(() => {
 
 <style>
 #app {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
 .main-content {
   flex: 1;
+  min-height: 0;
   padding: 20px 0;
   max-width: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
 }
 
 html, body {
+  height: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 </style>

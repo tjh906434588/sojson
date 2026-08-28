@@ -5,34 +5,37 @@
         v-model="jsonInput"
         type="textarea"
         :rows="12"
-        :placeholder="$t('tools.jsonParser.input')"
+        :placeholder="$t('tools.jsonCompressEscape.input')"
         class="textarea-input"
       />
 
       <div class="button-group">
-        <el-button type="primary" @click="formatJson" :icon="Document">
-          {{ $t('tools.jsonParser.formatValidate') }}
-        </el-button>
         <el-button type="success" @click="compressJson" :icon="Minus">
-          {{ $t('buttons.compress') }}
+          {{ $t('tools.jsonCompressEscape.compress') }}
         </el-button>
         <el-button type="warning" @click="escapeJson" :icon="Switch">
-          {{ $t('tools.jsonParser.escape') }}
+          {{ $t('tools.jsonCompressEscape.escape') }}
+        </el-button>
+        <el-button type="primary" @click="compressAndEscape" :icon="Operation">
+          {{ $t('tools.jsonCompressEscape.compressEscape') }}
         </el-button>
         <el-button @click="unescapeJson" :icon="RefreshLeft">
-          {{ $t('tools.jsonParser.unescape') }}
+          {{ $t('tools.jsonCompressEscape.unescape') }}
         </el-button>
         <el-button @click="unicodeToCn" :icon="CaretRight">
-          {{ $t('tools.jsonParser.unicodeToCn') }}
+          {{ $t('tools.jsonCompressEscape.unicodeToCn') }}
         </el-button>
         <el-button @click="cnToUnicode" :icon="CaretLeft">
-          {{ $t('tools.jsonParser.cnToUnicode') }}
+          {{ $t('tools.jsonCompressEscape.cnToUnicode') }}
+        </el-button>
+        <el-button class="btn-symbol" @click="cnSymbolToEn" :icon="EditPen">
+          {{ $t('tools.jsonCompressEscape.cnSymbolToEn') }}
         </el-button>
         <el-button @click="copyJson" :icon="CopyDocument">
-          {{ $t('tools.jsonParser.copyResult') }}
+          {{ $t('tools.jsonCompressEscape.copyResult') }}
         </el-button>
         <el-button type="info" @click="saveJson" :icon="Download">
-          {{ $t('tools.jsonParser.saveLocal') }}
+          {{ $t('tools.jsonCompressEscape.saveLocal') }}
         </el-button>
         <el-button type="danger" @click="clearJson" :icon="Delete">
           {{ $t('common.clear') }}
@@ -47,9 +50,9 @@
         class="tool-alert"
       >
         <div v-if="errorDetail" class="alert-detail">
-          <p class="alert-line">{{ t('tools.jsonParser.errLine', { line: errorDetail.line, column: errorDetail.column }) }}</p>
-          <p class="alert-content">{{ t('tools.jsonParser.errContent', { content: errorDetail.content }) }}</p>
-          <p class="alert-suggestion">{{ t('tools.jsonParser.errSuggestion', { suggestion: t(errorDetail.suggestionKey) }) }}</p>
+          <p class="alert-line">{{ t('tools.jsonCompressEscape.errLine', { line: errorDetail.line, column: errorDetail.column }) }}</p>
+          <p class="alert-content">{{ t('tools.jsonCompressEscape.errContent', { content: errorDetail.content }) }}</p>
+          <p class="alert-suggestion">{{ t('tools.jsonCompressEscape.errSuggestion', { suggestion: t(errorDetail.suggestionKey) }) }}</p>
         </div>
       </el-alert>
     </el-card>
@@ -60,7 +63,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
-import { Document, Minus, Switch, RefreshLeft, CaretRight, CaretLeft, CopyDocument, Download, Delete } from '@element-plus/icons-vue'
+import { Minus, Switch, Operation, RefreshLeft, CaretRight, CaretLeft, EditPen, CopyDocument, Download, Delete } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
 
@@ -71,7 +74,7 @@ const errorDetail = ref(null)
 
 const requireInput = () => {
   if (!jsonInput.value || !jsonInput.value.trim()) {
-    ElMessage.warning(t('tools.jsonParser.inputEmpty'))
+    ElMessage.warning(t('tools.jsonCompressEscape.inputEmpty'))
     // 输入已清空时，同步清除残留的错误提示
     message.value = ''
     errorDetail.value = null
@@ -112,24 +115,24 @@ const parseErrorInfo = (e) => {
     }
   }
   const atEnd = pos >= jsonInput.value.trim().length - 1
-  let suggestionKey = 'tools.jsonParser.errSugGeneric'
+  let suggestionKey = 'tools.jsonCompressEscape.errSugGeneric'
   if (/Unexpected end of JSON input|Unexpected end of input/i.test(msg)) {
-    suggestionKey = 'tools.jsonParser.errSugUnclosed'
+    suggestionKey = 'tools.jsonCompressEscape.errSugUnclosed'
   } else if (/Expected ':' after property name/i.test(msg)) {
-    suggestionKey = 'tools.jsonParser.errSugColon'
+    suggestionKey = 'tools.jsonCompressEscape.errSugColon'
   } else if (/Expected double-quoted property name/i.test(msg)) {
-    suggestionKey = 'tools.jsonParser.errSugTailComma'
+    suggestionKey = 'tools.jsonCompressEscape.errSugTailComma'
   } else if (/Expected ',' or '\]' after array element|Expected ',' or '\}' after property value|Expected ','|Expected '\]'|Expected '\}'/i.test(msg)) {
-    suggestionKey = atEnd ? 'tools.jsonParser.errSugUnclosed' : 'tools.jsonParser.errSugComma'
+    suggestionKey = atEnd ? 'tools.jsonCompressEscape.errSugUnclosed' : 'tools.jsonCompressEscape.errSugComma'
   } else if (/Unexpected non-whitespace character after JSON/i.test(msg)) {
     const head = jsonInput.value.trim().charAt(0)
     suggestionKey = (head === '{' || head === '[')
-      ? 'tools.jsonParser.errSugTrailing'
-      : 'tools.jsonParser.errSugWrap'
+      ? 'tools.jsonCompressEscape.errSugTrailing'
+      : 'tools.jsonCompressEscape.errSugWrap'
   } else if (/Unexpected string/i.test(msg)) {
-    suggestionKey = 'tools.jsonParser.errSugQuote'
+    suggestionKey = 'tools.jsonCompressEscape.errSugQuote'
   } else if (/Unexpected token|Unexpected number|Unexpected identifier/i.test(msg)) {
-    suggestionKey = 'tools.jsonParser.errSugTrailing'
+    suggestionKey = 'tools.jsonCompressEscape.errSugTrailing'
   }
   return { line, column, content, suggestionKey, pos }
 }
@@ -201,20 +204,6 @@ const parseWithFix = (input) => {
   }
 }
 
-const formatJson = () => {
-  if (!requireInput()) return
-  const r = parseWithFix(jsonInput.value)
-  jsonInput.value = r.value
-  if (r.ok) {
-    message.value = ''
-    errorDetail.value = null
-  } else {
-    message.value = 'tools.jsonParser.error'
-    messageType.value = 'error'
-    errorDetail.value = r.info
-  }
-}
-
 const compressJson = () => {
   if (!requireInput()) return
   try {
@@ -236,7 +225,7 @@ const compressJson = () => {
         jsonInput.value = rest ? JSON.stringify(JSON.parse(partial)) + '\n' + rest : JSON.stringify(JSON.parse(partial))
       }
     }
-    message.value = 'tools.jsonParser.error'
+    message.value = 'tools.jsonCompressEscape.error'
     messageType.value = 'error'
     errorDetail.value = info
   }
@@ -245,6 +234,49 @@ const compressJson = () => {
 const escapeJson = () => {
   if (!requireInput()) return
   jsonInput.value = jsonInput.value.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+  message.value = ''
+  errorDetail.value = null
+}
+
+
+const compressAndEscape = () => {
+  if (!requireInput()) return
+  try {
+    const minified = JSON.stringify(JSON.parse(jsonInput.value))
+    jsonInput.value = minified.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+    message.value = ''
+    errorDetail.value = null
+  } catch (e) {
+    const info = parseErrorInfo(e)
+    const fixed = tryFix(jsonInput.value)
+    if (fixed !== null) {
+      jsonInput.value = JSON.stringify(fixed).replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+    } else {
+      const partial = formatValidPrefix(jsonInput.value, info.pos)
+      if (partial !== null) {
+        const restStart = info.line > 1
+          ? jsonInput.value.lastIndexOf('\n', Math.max(0, info.pos - 1)) + 1
+          : info.pos
+        const rest = jsonInput.value.slice(restStart)
+        const fixedStr = JSON.stringify(JSON.parse(partial)).replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+        jsonInput.value = rest ? fixedStr + '\n' + rest : fixedStr
+      }
+    }
+    message.value = 'tools.jsonCompressEscape.error'
+    messageType.value = 'error'
+    errorDetail.value = info
+  }
+}
+
+const cnSymbolToEn = () => {
+  if (!requireInput()) return
+  const map = {
+    '，': ',', '。': '.', '、': ',', '：': ':', '；': ';',
+    '？': '?', '！': '!', '“': '"', '”': '"', '‘': "'", '’': "'",
+    '（': '(', '）': ')', '【': '[', '】': ']', '《': '<', '》': '>',
+    '～': '~', '—': '-', '…': '...'
+  }
+  jsonInput.value = jsonInput.value.replace(/[，。、：；？！“”‘’（）【】《》～…]/g, (ch) => map[ch] || ch)
   message.value = ''
   errorDetail.value = null
 }
@@ -272,7 +304,7 @@ const cnToUnicode = () => {
 
 const copyJson = () => {
   if (!jsonInput.value) {
-    ElMessage.warning(t('tools.jsonParser.copyEmpty'))
+    ElMessage.warning(t('tools.jsonCompressEscape.copyEmpty'))
     return
   }
   navigator.clipboard.writeText(jsonInput.value)
@@ -281,7 +313,7 @@ const copyJson = () => {
 
 const saveJson = () => {
   if (!jsonInput.value) {
-    ElMessage.warning(t('tools.jsonParser.noResult'))
+    ElMessage.warning(t('tools.jsonCompressEscape.noResult'))
     return
   }
   const blob = new Blob([jsonInput.value], { type: 'application/json;charset=utf-8' })
@@ -290,7 +322,7 @@ const saveJson = () => {
   if (/MicroMessenger/i.test(navigator.userAgent)) {
     window.open(url, '_blank')
     setTimeout(() => URL.revokeObjectURL(url), 60000)
-    ElMessage.success(t('tools.jsonParser.saved'))
+    ElMessage.success(t('tools.jsonCompressEscape.saved'))
     return
   }
   const a = document.createElement('a')
@@ -298,7 +330,7 @@ const saveJson = () => {
   a.download = 'json-result.json'
   a.click()
   URL.revokeObjectURL(url)
-  ElMessage.success(t('tools.jsonParser.saved'))
+  ElMessage.success(t('tools.jsonCompressEscape.saved'))
 }
 
 const clearJson = () => {
@@ -361,6 +393,13 @@ const clearJson = () => {
 .button-group {
   margin-top: 20px;
   margin-bottom: 0;
+}
+
+// Web 模式下「中文符号转英文符号」文字较长，占两列避免文字贴边
+@media (min-width: 769px) {
+  .button-group .btn-symbol {
+    grid-column: span 2;
+  }
 }
 
 .tool-alert {

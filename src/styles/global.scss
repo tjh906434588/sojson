@@ -5,8 +5,8 @@
 }
 
 html {
-  overflow-x: hidden;
-  overflow-y: scroll;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -14,16 +14,16 @@ body {
   background-color: #f5f7fa;
   color: #333;
   line-height: 1.6;
-  overflow-x: hidden;
-  overflow-y: auto;
+  height: 100%;
+  overflow: hidden;
 }
 
 #app {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .container {
@@ -36,9 +36,18 @@ body {
 
 .main-content {
   flex: 1;
+  min-height: 0;
   padding: 20px 0;
   max-width: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
+  // 内容超出时在内容区内部滚动，但不显示滚动条
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .tool-card {
@@ -101,6 +110,19 @@ body {
   font-family: 'Courier New', monospace;
 }
 
+@media (min-width: 769px) {
+  // Web（非H5）：按钮等宽等高排列，避免因文字长度不同导致宽度不统一
+  .button-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+
+    .el-button {
+      min-width: 0;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 15px;
@@ -116,7 +138,8 @@ body {
   
   .button-group {
     .el-button {
-      flex: 1 1 45%;
+      // H5 下一排三个，减少纵向占用、内容一屏放下
+      flex: 1 1 calc(33.333% - 8px);
       min-width: auto;
     }
   }
