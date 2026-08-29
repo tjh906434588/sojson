@@ -62,6 +62,10 @@ const convertTools = ref([
   { path: '/convert/case-convert', icon: 'EditPen', title: 'menu.caseConvert', desc: 'tools.caseConvert.description', color: '#409eff' }
 ])
 
+const otherTools = ref([
+  { path: '/other/feedback', icon: 'ChatDotRound', title: 'menu.feedback', desc: 'tools.feedback.description', color: '#909399' }
+])
+
 // 一级菜单组首页展示对应模块的工具卡片（参考 JSON 菜单逻辑）
 const tools = computed(() => {
   if (route.path.startsWith('/encrypt')) return encryptTools.value
@@ -69,6 +73,7 @@ const tools = computed(() => {
   if (route.path.startsWith('/document')) return documentTools.value
   if (route.path.startsWith('/frontend')) return frontendTools.value
   if (route.path.startsWith('/convert')) return convertTools.value
+  if (route.path.startsWith('/other')) return otherTools.value
   return jsonTools.value
 })
 </script>

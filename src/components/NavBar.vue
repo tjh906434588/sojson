@@ -132,7 +132,7 @@ import { useI18n } from 'vue-i18n'
 import { useAppStore } from '../store/app'
 import {
   ArrowDown, ArrowUp, Menu, Tools,
-  Lock, Operation, Document, Monitor, Switch
+  Lock, Operation, Document, Monitor, Switch, MoreFilled
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -239,12 +239,23 @@ const menus = [
     items: [
       { path: '/convert/case-convert', label: 'menu.caseConvert' }
     ]
+  },
+  {
+    key: 'other',
+    title: 'menu.otherTools',
+    icon: MoreFilled,
+    link: '/other',
+    prefix: '/other',
+    hidden: false,
+    items: [
+      { path: '/other/feedback', label: 'menu.feedback' }
+    ]
   }
 ]
 
 const activeMenu = computed(() => {
   // 组首页（如 /json、/encrypt、/compress、/document、/frontend）高亮对应一级菜单
-  if (route.path === '/' || route.path === '/json' || route.path === '/encrypt' || route.path === '/compress' || route.path === '/document' || route.path === '/frontend' || route.path === '/convert') {
+  if (route.path === '/' || route.path === '/json' || route.path === '/encrypt' || route.path === '/compress' || route.path === '/document' || route.path === '/frontend' || route.path === '/convert' || route.path === '/other') {
     const key = route.path === '/' ? 'json' : route.path.split('/')[1]
     return isMobile.value ? '/' + key : key
   }

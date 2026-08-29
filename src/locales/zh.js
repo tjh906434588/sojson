@@ -92,6 +92,8 @@ export default {
     webColors: '网页常用色彩',
     convert: '转换',
     caseConvert: '大小写转换',
+    otherTools: '其他工具',
+    feedback: '用户反馈',
   },
   tools: {
     jsonParser: {
@@ -415,6 +417,27 @@ export default {
       copyEmpty: '没有可复制的结果',
       noResult: '没有可导出的内容',
       exported: '已导出'
+    },
+    feedback: {
+      title: '用户反馈',
+      description: '告诉我们你的建议或遇到的问题',
+      type: '反馈类型',
+      typeBug: 'Bug反馈',
+      typeSuggestion: '功能建议',
+      typeQuestion: '使用咨询',
+      typeOther: '其他',
+      toolName: '相关工具',
+      toolNamePlaceholder: '请输入相关工具名称（可选）',
+      rating: '满意度评分',
+      content: '反馈内容',
+      contentPlaceholder: '请详细描述你遇到的问题或建议...',
+      contentEmpty: '请输入反馈内容',
+      email: '联系方式',
+      emailPlaceholder: '请输入邮箱地址（可选）',
+      emailInvalid: '请输入有效的邮箱地址',
+      submit: '提交反馈',
+      submitSuccess: '反馈提交成功，感谢你的支持！',
+      submitFailed: '提交失败，请稍后重试'
     },
   },
   footer: {

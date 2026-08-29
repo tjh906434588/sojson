@@ -125,6 +125,16 @@ const routes = [
     path: '/convert/case-convert',
     name: 'CaseConvert',
     component: () => import('../views/convert/CaseConvert.vue')
+  },
+  {
+    path: '/other',
+    name: 'OtherTools',
+    component: () => import('../views/Home.vue')
+  },
+  {
+    path: '/other/feedback',
+    name: 'Feedback',
+    component: () => import('../views/other/Feedback.vue')
   }
 ]
 

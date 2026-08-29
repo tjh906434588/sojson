@@ -92,6 +92,8 @@ export default {
     webColors: 'Web Common Colors',
     convert: 'Convert',
     caseConvert: 'Case Conversion',
+    otherTools: 'Other Tools',
+    feedback: 'Feedback',
   },
   tools: {
     jsonParser: {
@@ -415,6 +417,27 @@ export default {
       copyEmpty: 'Nothing to copy',
       noResult: 'Nothing to export',
       exported: 'Exported'
+    },
+    feedback: {
+      title: 'Feedback',
+      description: 'Tell us your suggestions or issues',
+      type: 'Type',
+      typeBug: 'Bug Report',
+      typeSuggestion: 'Feature Suggestion',
+      typeQuestion: 'Question',
+      typeOther: 'Other',
+      toolName: 'Related Tool',
+      toolNamePlaceholder: 'Enter the related tool name (optional)',
+      rating: 'Rating',
+      content: 'Content',
+      contentPlaceholder: 'Describe your issue or suggestion in detail...',
+      contentEmpty: 'Please enter feedback content',
+      email: 'Email',
+      emailPlaceholder: 'Enter your email (optional)',
+      emailInvalid: 'Please enter a valid email address',
+      submit: 'Submit Feedback',
+      submitSuccess: 'Feedback submitted, thank you!',
+      submitFailed: 'Submission failed, please try again later'
     },
   },
   footer: {
