@@ -31,12 +31,27 @@
                   </el-icon>
                 </div>
                 <template v-if="mobileSubOpenMap[group.key]">
+                  <!-- 扁平二级菜单 -->
                   <el-menu-item
                     v-for="item in group.items"
                     :key="item.path"
                     :index="item.path"
                     class="mobile-sub-item"
                   >{{ $t(item.label) }}</el-menu-item>
+                  <!-- 分组二级菜单（模块） -->
+                  <template v-for="module in group.modules" :key="module.key">
+                    <div class="mobile-module">
+                      <div class="mobile-module-top">
+                        <span class="mobile-module-label">{{ $t(module.title) }}</span>
+                      </div>
+                      <el-menu-item
+                        v-for="item in module.items"
+                        :key="item.path"
+                        :index="item.path"
+                        class="mobile-sub-item"
+                      >{{ $t(item.label) }}</el-menu-item>
+                    </div>
+                  </template>
                 </template>
               </div>
             </template>
@@ -56,11 +71,27 @@
                   <span>{{ $t(group.title) }}</span>
                 </div>
               </template>
-              <el-menu-item
-                v-for="item in group.items"
-                :key="item.path"
-                :index="item.path"
-              >{{ $t(item.label) }}</el-menu-item>
+              <!-- 扁平二级菜单 -->
+              <template v-if="group.items">
+                <el-menu-item
+                  v-for="item in group.items"
+                  :key="item.path"
+                  :index="item.path"
+                >{{ $t(item.label) }}</el-menu-item>
+              </template>
+              <!-- 分组二级菜单（模块） -->
+              <template v-else-if="group.modules">
+                <template v-for="module in group.modules" :key="module.key">
+                  <div class="web-module-title">
+                    <span class="web-module-title-label">{{ $t(module.title) }}</span>
+                  </div>
+                  <el-menu-item
+                    v-for="item in module.items"
+                    :key="item.path"
+                    :index="item.path"
+                  >{{ $t(item.label) }}</el-menu-item>
+                </template>
+              </template>
             </el-sub-menu>
           </template>
         </el-menu>
@@ -101,7 +132,7 @@ import { useI18n } from 'vue-i18n'
 import { useAppStore } from '../store/app'
 import {
   ArrowDown, ArrowUp, Menu, Tools,
-  Lock, Operation, Document, Monitor, Switch, MagicStick, Guide, CoffeeCup, Trophy, MoreFilled
+  Lock, Operation, Document, Monitor, Switch
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -141,35 +172,45 @@ const menus = [
     key: 'encrypt',
     title: 'menu.encryptDecrypt',
     icon: Lock,
-    link: '/encrypt/encrypt-decrypt',
+    link: '/encrypt',
     prefix: '/encrypt',
-    hidden: true,
-    items: [
-      { path: '/encrypt/encrypt-decrypt', label: 'menu.encrypt' },
-      { path: '/encrypt/hash', label: 'menu.hash' },
-      { path: '/encrypt/base64', label: 'menu.base64' },
-      { path: '/encrypt/image-base64', label: 'menu.imageBase64' }
+    hidden: false,
+    // 该一级菜单分两个模块，每个模块下有自己的二级菜单页面
+    modules: [
+      {
+        key: 'symmetric',
+        title: 'menu.encryptModule1',
+        items: [
+          { path: '/encrypt/encrypt-decrypt', label: 'menu.encrypt' }
+        ]
+      },
+      {
+        key: 'js',
+        title: 'menu.encryptModule2',
+        items: [
+          { path: '/encrypt/js-encrypt-decrypt', label: 'menu.jsEncryptDecrypt' }
+        ]
+      }
     ]
   },
   {
     key: 'compress',
     title: 'menu.compressFormat',
     icon: Operation,
-    link: '/compress/js-html-format',
+    link: '/compress',
     prefix: '/compress',
-    hidden: true,
+    hidden: false,
     items: [
-      { path: '/compress/js-html-format', label: 'menu.jsHtmlFormat' },
-      { path: '/compress/js-format', label: 'menu.jsFormat' }
+      { path: '/compress/js-html-format', label: 'menu.jsHtmlFormat' }
     ]
   },
   {
     key: 'documents',
     title: 'menu.documents',
     icon: Document,
-    link: '/document/mime-type',
+    link: '/document',
     prefix: '/document',
-    hidden: true,
+    hidden: false,
     items: [
       { path: '/document/mime-type', label: 'menu.mimeType' },
       { path: '/document/html-escape', label: 'menu.htmlEscape' },
@@ -181,107 +222,32 @@ const menus = [
     key: 'frontend',
     title: 'menu.frontend',
     icon: Monitor,
-    link: '/frontend/color-picker',
+    link: '/frontend',
     prefix: '/frontend',
-    hidden: true,
+    hidden: false,
     items: [
-      { path: '/frontend/color-picker', label: 'menu.colorPicker' },
-      { path: '/frontend/web-colors', label: 'menu.webColors' },
-      { path: '/frontend/image-color', label: 'menu.imageColor' },
-      { path: '/frontend/web-safe-color', label: 'menu.webSafeColor' },
-      { path: '/frontend/color-selector', label: 'menu.colorSelector' }
+      { path: '/frontend/web-colors', label: 'menu.webColors' }
     ]
   },
   {
     key: 'convert',
     title: 'menu.convert',
     icon: Switch,
-    link: '/convert/case-convert',
+    link: '/convert',
     prefix: '/convert',
-    hidden: true,
+    hidden: false,
     items: [
-      { path: '/convert/case-convert', label: 'menu.caseConvert' },
-      { path: '/convert/full-half-convert', label: 'menu.fullHalfConvert' },
-      { path: '/convert/lang-convert', label: 'menu.langConvert' }
-    ]
-  },
-  {
-    key: 'qrcode',
-    title: 'menu.qrcode',
-    icon: MagicStick,
-    link: '/qrcode/qrcode-gen',
-    prefix: '/qrcode',
-    hidden: true,
-    items: [
-      { path: '/qrcode/qrcode-gen', label: 'menu.qrcodeGen' },
-      { path: '/qrcode/qrcode-beautify', label: 'menu.qrcodeBeautify' },
-      { path: '/qrcode/qrcode-parse', label: 'menu.qrcodeParse' }
-    ]
-  },
-  {
-    key: 'webmaster',
-    title: 'menu.webmaster',
-    icon: Guide,
-    link: '/webmaster/linux-cmd',
-    prefix: '/webmaster',
-    hidden: true,
-    items: [
-      { path: '/webmaster/linux-cmd', label: 'menu.linuxCmd' },
-      { path: '/webmaster/seo-tool', label: 'menu.seoTool' },
-      { path: '/webmaster/js-lib', label: 'menu.jsLib' }
-    ]
-  },
-  {
-    key: 'lifeTool',
-    title: 'menu.lifeTool',
-    icon: CoffeeCup,
-    link: '/life/date-calc',
-    prefix: '/life',
-    hidden: true,
-    items: [
-      { path: '/life/date-calc', label: 'menu.dateCalc' },
-      { path: '/life/stopwatch', label: 'menu.stopwatch' },
-      { path: '/life/festival', label: 'menu.festival' },
-      { path: '/life/postal-code', label: 'menu.postalCode' },
-      { path: '/life/mix-rate', label: 'menu.mixRate' }
-    ]
-  },
-  {
-    key: 'culture',
-    title: 'menu.culture',
-    icon: Trophy,
-    link: '/culture/periodic-table',
-    prefix: '/culture',
-    hidden: true,
-    items: [
-      { path: '/culture/periodic-table', label: 'menu.periodicTable' },
-      { path: '/culture/sentence-trans', label: 'menu.sentenceTrans' }
-    ]
-  },
-  {
-    key: 'otherTools',
-    title: 'menu.otherTools',
-    icon: MoreFilled,
-    link: '/other/algebra',
-    prefix: '/other',
-    hidden: true,
-    items: [
-      { path: '/other/algebra', label: 'menu.algebra' },
-      { path: '/other/image-tool', label: 'menu.imageTool' },
-      { path: '/other/sudoku', label: 'menu.sudoku' },
-      { path: '/other/about', label: 'menu.about' },
-      { path: '/other/privacy', label: 'menu.privacy' },
-      { path: '/other/contact', label: 'menu.contact' },
-      { path: '/other/feedback', label: 'menu.feedback' }
+      { path: '/convert/case-convert', label: 'menu.caseConvert' }
     ]
   }
 ]
 
 const activeMenu = computed(() => {
-  if (route.path === '/' || route.path === '/json') {
-    return isMobile.value ? '/json' : 'json'
+  // 组首页（如 /json、/encrypt、/compress、/document、/frontend）高亮对应一级菜单
+  if (route.path === '/' || route.path === '/json' || route.path === '/encrypt' || route.path === '/compress' || route.path === '/document' || route.path === '/frontend' || route.path === '/convert') {
+    const key = route.path === '/' ? 'json' : route.path.split('/')[1]
+    return isMobile.value ? '/' + key : key
   }
-  if (route.path.startsWith('/json')) return route.path
   return route.path
 })
 
@@ -318,7 +284,9 @@ const toggleMobileSubMenu = (key) => {
 
 // 菜单收起时，同时收起所有二级菜单，保证下次打开默认是折叠状态
 watch(isMobileMenuOpen, (v) => {
-  if (!v) mobileSubOpenMap.value = {}
+  if (!v) {
+    mobileSubOpenMap.value = {}
+  }
 })
 
 const handleMenuSelect = (index) => {
@@ -438,6 +406,35 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   height: 100%;
+}
+
+// Web：模块名作为分组标题，前后横线拉通占满剩余空间，下方紧跟该模块的二级菜单项
+.web-module-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px 4px;
+  font-size: 12px;
+  color: #909399;
+  cursor: default;
+  white-space: nowrap;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1 1 0;
+    min-width: 16px;
+    height: 1px;
+    background: #c0c4cc;
+  }
+
+  .web-module-title-label {
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .navbar-right {
@@ -560,6 +557,42 @@ onUnmounted(() => {
     .mobile-sub-item {
       // 对齐一级菜单文字的第 2 个字符位置（一级文字起点约 50px + 1 个字符宽）
       padding-left: 58px !important;
+    }
+
+    .mobile-module {
+      width: 100%;
+    }
+
+    .mobile-module-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 44px;
+      padding: 0 30px;
+      color: #606266;
+      font-size: 13px;
+
+      // 标题前后横线拉通，占满剩余空间
+      &::before,
+      &::after {
+        content: '';
+        flex: 1 1 0;
+        min-width: 20px;
+        height: 1px;
+        background: #c0c4cc;
+      }
+
+      .mobile-module-label {
+        flex-shrink: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .mobile-module .mobile-sub-item {
+      padding-left: 42px !important;
     }
   }
 

@@ -21,9 +21,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
-const tools = ref([
+const route = useRoute()
+
+const jsonTools = ref([
   { path: '/json/json-parse', icon: 'EditPen', title: 'menu.jsonParse', desc: 'tools.jsonParser.description', color: '#409eff' },
   { path: '/json/json-online-parse', icon: 'DataAnalysis', title: 'menu.jsonOnlineParse', desc: 'tools.jsonOnlineParse.description', color: '#67c23a' },
   { path: '/json/json-compress-escape', icon: 'Operation', title: 'menu.jsonCompressEscape', desc: 'tools.jsonCompressEscape.description', color: '#f56c6c' },
@@ -34,11 +37,45 @@ const tools = ref([
   { path: '/json/json-entity', icon: 'Files', title: 'menu.jsonEntity', desc: 'tools.jsonEntity.description', color: '#13c2c2' },
   { path: '/json/json-excel', icon: 'Grid', title: 'menu.jsonExcel', desc: 'tools.jsonExcel.description', color: '#1e80ff' }
 ])
+
+const encryptTools = ref([
+  { path: '/encrypt/encrypt-decrypt', icon: 'Lock', title: 'menu.encrypt', desc: 'tools.encryptDecrypt.description', color: '#409eff' },
+  { path: '/encrypt/js-encrypt-decrypt', icon: 'Operation', title: 'menu.jsEncryptDecrypt', desc: 'tools.jsEncryptDecrypt.description', color: '#67c23a' }
+])
+
+const compressTools = ref([
+  { path: '/compress/js-html-format', icon: 'Operation', title: 'menu.jsHtmlFormat', desc: 'tools.jsHtmlFormat.description', color: '#e6a23c' }
+])
+
+const documentTools = ref([
+  { path: '/document/mime-type', icon: 'Document', title: 'menu.mimeType', desc: 'tools.mimeType.description', color: '#409eff' },
+  { path: '/document/html-escape', icon: 'EditPen', title: 'menu.htmlEscape', desc: 'tools.htmlEscape.description', color: '#67c23a' },
+  { path: '/document/rgb-color', icon: 'MagicStick', title: 'menu.rgbColor', desc: 'tools.rgbColor.description', color: '#f56c6c' },
+  { path: '/document/public-dns', icon: 'Connection', title: 'menu.publicDns', desc: 'tools.publicDns.description', color: '#e6a23c' }
+])
+
+const frontendTools = ref([
+  { path: '/frontend/web-colors', icon: 'Brush', title: 'menu.webColors', desc: 'tools.webColors.description', color: '#67c23a' }
+])
+
+const convertTools = ref([
+  { path: '/convert/case-convert', icon: 'EditPen', title: 'menu.caseConvert', desc: 'tools.caseConvert.description', color: '#409eff' }
+])
+
+// 一级菜单组首页展示对应模块的工具卡片（参考 JSON 菜单逻辑）
+const tools = computed(() => {
+  if (route.path.startsWith('/encrypt')) return encryptTools.value
+  if (route.path.startsWith('/compress')) return compressTools.value
+  if (route.path.startsWith('/document')) return documentTools.value
+  if (route.path.startsWith('/frontend')) return frontendTools.value
+  if (route.path.startsWith('/convert')) return convertTools.value
+  return jsonTools.value
+})
 </script>
 
 <style scoped lang="scss">
 .home {
-  padding: 20px 0;
+  padding: 0;
 }
 
 
