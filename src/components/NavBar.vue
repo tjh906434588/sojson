@@ -379,29 +379,17 @@ onUnmounted(() => {
   flex: 1;
   min-width: 0;
   display: flex;
-  align-items: center;
+  align-items: center; // 菜单在导航栏内垂直居中
+  justify-content: flex-start;
   overflow-x: auto;
   overflow-y: hidden;
-  max-width: calc(100% - 300px);
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+  max-width: calc(100% - 280px);
+  // 隐藏横向滚动条且不占位：避免滚动条挤压内容区导致菜单顶部被裁、出现“靠上”错位
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
+    display: none;
     height: 0;
-  }
-
-  &:hover {
-    scrollbar-width: thin;
-    scrollbar-color: #c0c4cc transparent;
-
-    &::-webkit-scrollbar {
-      height: 4px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #c0c4cc;
-      border-radius: 2px;
-    }
   }
 
   .nav-menu {
@@ -409,6 +397,25 @@ onUnmounted(() => {
     display: flex;
     flex-wrap: nowrap;
     white-space: nowrap;
+    height: 100%; // 撑满导航栏高度，与 logo 一样垂直居中
+
+    :deep(.el-sub-menu__title) {
+      height: 100%; // 一级菜单项撑满菜单条，icon 与文字在内部垂直居中
+    }
+  }
+}
+
+// Web：一级菜单项压缩左右内边距，避免菜单过多时出现横向滚动条
+@media (min-width: 769px) {
+  .nav-menu {
+    :deep(.el-sub-menu__title),
+    :deep(.el-menu-item) {
+      padding: 0 12px !important;
+    }
+  }
+
+  .menu-title {
+    gap: 4px;
   }
 }
 
