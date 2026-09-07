@@ -108,10 +108,10 @@ const valueText = computed(() => {
 
 <style scoped lang="scss">
 .jt-node {
-  font-family: 'Courier New', Consolas, monospace;
-  font-size: 13px;
+  font-family: var(--font-code);
+  font-size: var(--font-size-md);
   line-height: 22px;
-  color: #303133;
+  color: var(--text-primary);
 }
 
 .jt-line {
@@ -140,13 +140,13 @@ const valueText = computed(() => {
 }
 
 .jt-colon {
-  color: #303133;
+  color: var(--text-primary);
   margin-right: 2px;
 }
 
 // 数组圈数字角标：橙色加粗，与内容明显区分
 .jt-idx {
-  color: #909399;
+  color: var(--text-secondary);
   font-weight: 700;
   font-size: 15px;
   line-height: 1;
@@ -155,15 +155,15 @@ const valueText = computed(() => {
 }
 
 .jt-bracket {
-  color: #303133;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 .jt-arrow {
   display: inline-block;
   width: 14px;
-  color: #909399;
-  font-size: 11px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
 }
 
 .jt-string {
@@ -184,8 +184,8 @@ const valueText = computed(() => {
 }
 
 .jt-type {
-  color: #e6a23c;
-  font-size: 11px;
+  color: var(--color-warning);
+  font-size: var(--font-size-xs);
 }
 
 // 关闭高亮时统一内容颜色；角标与数据类型颜色保持不变，便于区分
@@ -198,7 +198,7 @@ const valueText = computed(() => {
   .jt-bracket,
   .jt-colon,
   .jt-arrow {
-    color: #303133;
+    color: var(--text-primary);
   }
 }
 </style>

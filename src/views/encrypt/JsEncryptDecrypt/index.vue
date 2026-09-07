@@ -238,8 +238,8 @@ const clear = () => {
 // 代码文本域：撑满布局由全局 .textarea-input 提供，此处仅补充代码字体
 .textarea-input {
   :deep(.el-textarea__inner) {
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 13px;
+    font-family: 'Consolas', 'Monaco', var(--font-code);
+    font-size: var(--font-size-md);
     line-height: 1.5;
   }
 }

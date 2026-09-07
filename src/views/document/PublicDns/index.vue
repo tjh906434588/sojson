@@ -164,7 +164,7 @@ const copyDNS = (text) => {
 
 .section-title {
   margin: 0 0 12px;
-  font-size: 16px;
+  font-size: var(--font-size-lg);
   font-weight: 600;
   color: var(--el-text-color-primary);
 }
@@ -186,7 +186,7 @@ const copyDNS = (text) => {
 
   .copy-icon {
     flex-shrink: 0;
-    font-size: 14px;
+    font-size: var(--font-size-base);
     margin-top: 2px;
   }
 }

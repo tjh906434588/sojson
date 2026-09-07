@@ -1,0 +1,42 @@
+// 统一样式变量：全站共享的 CSS 自定义属性统一在此集中定义，
+// 由 src/main.ts 最先引入，所有样式文件与组件均可通过 var() 引用。
+// 新增共享变量统一追加于此，修改也只需改这一处。
+
+:root {
+  // ===== 布局 =====
+  --layout-max-width: 1200px; // 顶部导航 / 内容区 / 页脚统一最大宽度
+  --navbar-height: 60px;      // 顶部导航高度（含移动端菜单与遮罩定位）
+
+  // ===== 主题色 =====
+  --color-primary: #409eff;
+  --color-success: #67c23a;
+  --color-warning: #e6a23c;
+  --color-danger: #f56c6c;
+
+  // ===== 文字色 =====
+  --text-primary: #303133;
+  --text-regular: #606266;
+  --text-secondary: #909399;
+
+  // ===== 边框 / 填充 =====
+  --border-color: #dcdfe6;
+  --border-color-light: #e4e7ed;
+  --border-color-lighter: #c0c4cc;
+  --fill-color-light: #f5f7fa;
+  --fill-color-lighter: #fafafa;
+
+  // ===== 字号 =====
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 13px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+
+  // ===== 字体 =====
+  --font-code: 'Courier New', Consolas, monospace; // 代码 / 结果展示字体
+
+  // ===== 按钮 =====
+  --button-min-width: 100px; // 工具页按钮组默认最小宽度
+}

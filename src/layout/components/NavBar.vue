@@ -253,8 +253,8 @@ watch(isMobile, (v) => {
   align-items: stretch;
   justify-content: space-between;
   padding: 0 20px;
-  height: 60px;
-  max-width: 1400px;
+  height: var(--navbar-height);
+  max-width: var(--layout-max-width);
   box-sizing: border-box;
 }
 
@@ -267,13 +267,13 @@ watch(isMobile, (v) => {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: #409eff;
+    color: var(--color-primary);
 
     .logo-text {
       margin-left: 8px;
-      font-size: 20px;
+      font-size: var(--font-size-xl);
       font-weight: 600;
-      color: #303133;
+      color: var(--text-primary);
       white-space: nowrap;
     }
   }
@@ -309,10 +309,15 @@ watch(isMobile, (v) => {
   }
 }
 
-// Web：一级菜单项压缩左右内边距，避免菜单过多时出现横向滚动条
+// Web：一级菜单项压缩内边距，避免菜单过多时出现横向滚动条
+// 子菜单标题右侧需预留箭头空间（EP 箭头 right: 20px、宽约 12px），
+// 否则压缩后箭头会与标题文字重叠；普通菜单项无箭头，可正常压缩
 @media (min-width: 769px) {
   .nav-menu {
-    :deep(.el-sub-menu__title),
+    :deep(.el-sub-menu__title) {
+      padding: 0 36px 0 12px !important;
+    }
+
     :deep(.el-menu-item) {
       padding: 0 12px !important;
     }
@@ -336,8 +341,8 @@ watch(isMobile, (v) => {
   align-items: center;
   gap: 10px;
   padding: 8px 20px 4px;
-  font-size: 12px;
-  color: #909399;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
   cursor: default;
   white-space: nowrap;
 
@@ -347,7 +352,7 @@ watch(isMobile, (v) => {
     flex: 1 1 0;
     min-width: 16px;
     height: 1px;
-    background: #c0c4cc;
+    background: var(--border-color-lighter);
   }
 
   .web-module-title-label {
@@ -378,19 +383,19 @@ watch(isMobile, (v) => {
 @media (max-width: 768px) {
   .navbar {
     height: auto;
-    min-height: 60px;
+    min-height: var(--navbar-height);
   }
 
   .navbar-container {
     height: auto;
-    min-height: 60px;
+    min-height: var(--navbar-height);
     padding: 0 15px;
     flex-wrap: wrap;
   }
 
   .navbar-menu {
     position: fixed;
-    top: 60px;
+    top: var(--navbar-height);
     left: 0;
     right: 0;
     background: white;
@@ -438,7 +443,7 @@ watch(isMobile, (v) => {
 
       &.is-active {
         // 与二级菜单选中态保持一致：仅文字与左侧图标变蓝，无背景
-        color: #409eff;
+        color: var(--color-primary);
       }
 
       .mobile-menu-label {
@@ -460,7 +465,7 @@ watch(isMobile, (v) => {
         justify-content: center;
         height: 100%;
         padding: 0 16px;
-        color: #909399;
+        color: var(--text-secondary);
         cursor: pointer;
 
         // 防止 el-icon 内的箭头 SVG 在窄容器里被 flex 压缩成 0 宽（不可见）
@@ -471,7 +476,7 @@ watch(isMobile, (v) => {
         }
 
         &:hover {
-          color: #409eff;
+          color: var(--color-primary);
         }
       }
     }
@@ -491,8 +496,8 @@ watch(isMobile, (v) => {
       gap: 10px;
       height: 44px;
       padding: 0 30px;
-      color: #606266;
-      font-size: 13px;
+      color: var(--text-regular);
+      font-size: var(--font-size-md);
 
       // 标题前后横线拉通，占满剩余空间
       &::before,
@@ -501,7 +506,7 @@ watch(isMobile, (v) => {
         flex: 1 1 0;
         min-width: 20px;
         height: 1px;
-        background: #c0c4cc;
+        background: var(--border-color-lighter);
       }
 
       .mobile-module-label {
@@ -521,7 +526,7 @@ watch(isMobile, (v) => {
   // 菜单展开时的遮罩，覆盖除菜单外的页面区域
   .menu-mask {
     position: fixed;
-    top: 60px;
+    top: var(--navbar-height);
     left: 0;
     right: 0;
     bottom: 0;

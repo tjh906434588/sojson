@@ -285,7 +285,7 @@ const onNodeDrop = (e) => {
   overflow: hidden;
 
   &:hover {
-    background: #f5f7fa;
+    background: var(--fill-color-light);
   }
 }
 
@@ -322,7 +322,7 @@ const onNodeDrop = (e) => {
 .jvt-dot {
   width: 3px;
   height: 3px;
-  background: #909399;
+  background: var(--text-secondary);
   border-radius: 50%;
 }
 
@@ -339,7 +339,7 @@ const onNodeDrop = (e) => {
   display: inline-block;
   width: 16px;
   text-align: center;
-  color: #606266;
+  color: var(--text-regular);
   cursor: pointer;
   user-select: none;
 }
@@ -355,7 +355,7 @@ const onNodeDrop = (e) => {
   outline: none;
 
   &:focus {
-    border-color: #409eff;
+    border-color: var(--color-primary);
     background: #fff;
   }
 }
@@ -368,12 +368,12 @@ const onNodeDrop = (e) => {
 }
 
 .jvt-key {
-  color: #303133;
+  color: var(--text-primary);
   margin-right: 2px;
 }
 
 .jvt-colon {
-  color: #606266;
+  color: var(--text-regular);
   margin-right: 4px;
 }
 
@@ -397,18 +397,18 @@ const onNodeDrop = (e) => {
 }
 
 .jvt-summary {
-  color: #606266;
+  color: var(--text-regular);
   cursor: pointer;
 }
 
 .jvt-type-label {
-  color: #409eff;
+  color: var(--color-primary);
   font-weight: 600;
   margin-right: 4px;
 }
 
 .jvt-bracket {
-  color: #606266;
+  color: var(--text-regular);
   cursor: pointer;
   margin-right: 4px;
 }
@@ -429,17 +429,17 @@ const onNodeDrop = (e) => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #909399;
+  color: var(--text-secondary);
   border-radius: 3px;
 
   &:hover {
-    background: #e4e7ed;
-    color: #606266;
+    background: var(--border-color-light);
+    color: var(--text-regular);
   }
 }
 
 .jvt-type-icon {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
 }
 
@@ -447,9 +447,9 @@ const onNodeDrop = (e) => {
   display: inline-block;
   min-width: 16px;
   margin-right: 8px;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
-  color: #606266;
+  color: var(--text-regular);
   text-align: center;
 }
 
@@ -470,13 +470,13 @@ const onNodeDrop = (e) => {
   justify-content: center;
   width: 18px;
   height: 18px;
-  color: #909399;
+  color: var(--text-secondary);
   cursor: pointer;
   border-radius: 3px;
 
   &:hover {
-    color: #409eff;
-    background: #e4e7ed;
+    color: var(--color-primary);
+    background: var(--border-color-light);
   }
 }
 
@@ -485,7 +485,7 @@ const onNodeDrop = (e) => {
   left: 0;
   right: 0;
   height: 2px;
-  background: #409eff;
+  background: var(--color-primary);
   z-index: 2;
 }
 
@@ -499,7 +499,7 @@ const onNodeDrop = (e) => {
 
 .jvt-drop-inside > .jvt-row {
   background: #ecf5ff;
-  box-shadow: inset 0 0 0 1px #409eff;
+  box-shadow: inset 0 0 0 1px var(--color-primary);
 }
 
 .jvt-dragging {

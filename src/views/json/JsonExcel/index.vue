@@ -198,14 +198,14 @@ const clearAll = () => {
 <style scoped lang="scss">
 .status-line {
   margin-top: 12px;
-  font-size: 12px;
+  font-size: var(--font-size-sm);
 
   &.status-valid {
-    color: #67c23a;
+    color: var(--color-success);
   }
 
   &.status-invalid {
-    color: #f56c6c;
+    color: var(--color-danger);
   }
 }
 </style>

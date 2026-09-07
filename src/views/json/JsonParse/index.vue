@@ -320,7 +320,7 @@ const clearJson = () => {
   }
 
   .alert-suggestion {
-    color: #e6a23c;
+    color: var(--color-warning);
     font-weight: 600;
   }
 }

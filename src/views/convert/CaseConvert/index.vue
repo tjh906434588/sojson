@@ -278,8 +278,8 @@ const exportText = () => {
   }
 
   .select-label {
-    font-size: 14px;
-    color: #606266;
+    font-size: var(--font-size-base);
+    color: var(--text-regular);
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -326,8 +326,8 @@ const exportText = () => {
   }
 
   .select-label {
-    font-size: 14px;
-    color: #606266;
+    font-size: var(--font-size-base);
+    color: var(--text-regular);
     white-space: nowrap;
     flex-shrink: 0;
   }

@@ -241,9 +241,9 @@ const clearAll = () => {
 
 .panel-title {
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: var(--font-size-base);
   font-weight: 600;
-  color: #606266;
+  color: var(--text-regular);
 }
 
 .mid-select {
@@ -282,9 +282,9 @@ const clearAll = () => {
   min-height: 0;
   overflow: auto;
   padding: 12px;
-  border: 1px solid #dcdfe6;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
-  background: #f5f7fa;
+  background: var(--fill-color-light);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -298,18 +298,18 @@ const clearAll = () => {
   .md5-label {
     flex-shrink: 0;
     width: 72px;
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     line-height: 24px;
-    color: #909399;
+    color: var(--text-secondary);
   }
 
   .md5-value {
     flex: 1;
     word-break: break-all;
-    font-family: Consolas, Monaco, 'Courier New', monospace;
-    font-size: 12px;
+    font-family: Consolas, Monaco, var(--font-code);
+    font-size: var(--font-size-sm);
     line-height: 24px;
-    color: #303133;
+    color: var(--text-primary);
   }
 
   .md5-copy {
@@ -319,8 +319,8 @@ const clearAll = () => {
 }
 
 .md5-empty {
-  color: #909399;
-  font-size: 13px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
   text-align: center;
   margin-top: 40px;
 }

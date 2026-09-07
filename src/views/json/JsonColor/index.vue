@@ -249,8 +249,8 @@ const formatJson = () => {
   margin: 16px 0;
 
   .ctrl-label {
-    font-size: 14px;
-    color: #606266;
+    font-size: var(--font-size-base);
+    color: var(--text-regular);
   }
 
   .ctrl-select {
@@ -275,15 +275,15 @@ const formatJson = () => {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  background: #fafafa;
-  border: 1px solid #e4e7ed;
+  background: var(--fill-color-lighter);
+  border: 1px solid var(--border-color-light);
   border-radius: 4px;
   padding: 12px;
-  font-family: 'Consolas', 'Menlo', 'Courier New', monospace;
-  font-size: 13px;
+  font-family: 'Consolas', 'Menlo', var(--font-code);
+  font-size: var(--font-size-md);
   line-height: 1.7;
   white-space: pre;
-  color: #303133;
+  color: var(--text-primary);
   box-sizing: border-box;
 
   .jline {
@@ -297,7 +297,7 @@ const formatJson = () => {
   }
 
   .jtgl {
-    color: #909399;
+    color: var(--text-secondary);
     cursor: pointer;
     user-select: none;
     display: inline-block;
@@ -325,24 +325,24 @@ const formatJson = () => {
   }
 
   .jbrace {
-    color: #e6a23c;
+    color: var(--color-warning);
   }
 
   .jbracket {
-    color: #409eff;
+    color: var(--color-primary);
   }
 
   .jpunct {
-    color: #303133;
+    color: var(--text-primary);
   }
 
   .jdots {
-    color: #909399;
+    color: var(--text-secondary);
   }
 
   .output-empty {
-    color: #909399;
-    font-size: 13px;
+    color: var(--text-secondary);
+    font-size: var(--font-size-md);
   }
 }
 
@@ -361,19 +361,19 @@ const formatJson = () => {
     :deep(.el-button) {
       height: 24px;
       padding: 0 10px;
-      font-size: 12px;
+      font-size: var(--font-size-sm);
     }
 
     // H5 下选择框整体变小（类似按钮 size=small）
     :deep(.el-select__wrapper) {
       height: 24px;
       min-height: 24px;
-      font-size: 12px;
+      font-size: var(--font-size-sm);
       padding: 0 8px;
     }
     :deep(.el-select__placeholder),
     :deep(.el-select__selected-item) {
-      font-size: 12px;
+      font-size: var(--font-size-sm);
     }
   }
 }

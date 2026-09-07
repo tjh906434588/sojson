@@ -313,10 +313,10 @@ defineExpose({ nodeToJson })
 .jvt-tree {
   height: 100%;
   overflow: auto;
-  font-family: 'Courier New', Consolas, monospace;
-  font-size: 13px;
+  font-family: var(--font-code);
+  font-size: var(--font-size-md);
   line-height: 22px;
-  color: #303133;
+  color: var(--text-primary);
   padding: 10px;
 }
 </style>

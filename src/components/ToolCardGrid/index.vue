@@ -77,12 +77,12 @@ defineProps<{
     h3 {
       margin: 15px 0 10px;
       font-size: 18px;
-      color: #303133;
+      color: var(--text-primary);
     }
 
     p {
-      color: #606266;
-      font-size: 14px;
+      color: var(--text-regular);
+      font-size: var(--font-size-base);
       margin: 0;
     }
   }

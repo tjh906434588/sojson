@@ -221,7 +221,7 @@ const copyResult = () => {
   margin-bottom: 12px;
 
   .el-button {
-    min-width: 100px;
+    min-width: var(--button-min-width);
   }
 
   .layout-radio {
@@ -274,15 +274,15 @@ const copyResult = () => {
     margin: 0;
     padding: 10px 12px;
     overflow: auto;
-    font-family: 'Courier New', Consolas, monospace;
-    font-size: 13px;
+    font-family: var(--font-code);
+    font-size: var(--font-size-md);
     line-height: 1.5;
     white-space: pre;
     word-break: break-all;
-    background: #fafafa;
-    border: 1px solid #e4e7ed;
+    background: var(--fill-color-lighter);
+    border: 1px solid var(--border-color-light);
     border-radius: 4px;
-    color: #303133;
+    color: var(--text-primary);
   }
 
   // 树形结果容器（格式化模式）
@@ -292,10 +292,10 @@ const copyResult = () => {
     margin: 0;
     padding: 10px 12px;
     overflow: auto;
-    background: #fafafa;
-    border: 1px solid #e4e7ed;
+    background: var(--fill-color-lighter);
+    border: 1px solid var(--border-color-light);
     border-radius: 4px;
-    color: #303133;
+    color: var(--text-primary);
   }
 
   // 无结果时的占位提示
@@ -305,10 +305,10 @@ const copyResult = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #c0c4cc;
-    font-size: 14px;
-    background: #fafafa;
-    border: 1px dashed #e4e7ed;
+    color: var(--border-color-lighter);
+    font-size: var(--font-size-base);
+    background: var(--fill-color-lighter);
+    border: 1px dashed var(--border-color-light);
     border-radius: 4px;
   }
 }
@@ -341,19 +341,19 @@ const copyResult = () => {
   color: #6a737d;
 }
 .json-bracket {
-  color: #303133;
+  color: var(--text-primary);
   font-weight: 600;
 }
 .json-colon {
-  color: #303133;
+  color: var(--text-primary);
 }
 .json-type {
-  color: #e6a23c;
-  font-size: 11px;
+  color: var(--color-warning);
+  font-size: var(--font-size-xs);
 }
 .json-idx {
-  color: #909399;
-  font-size: 11px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
 }
 
 .splitter {
@@ -375,7 +375,7 @@ const copyResult = () => {
   }
 
   .splitter-icon {
-    fill: #909399;
+    fill: var(--text-secondary);
     pointer-events: none;
   }
 }

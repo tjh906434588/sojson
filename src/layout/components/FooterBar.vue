@@ -22,7 +22,7 @@
 }
 
 .footer-container {
-  max-width: 1200px;
+  max-width: var(--layout-max-width);
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -31,12 +31,12 @@
   text-align: center;
   
   .copyright {
-    font-size: 14px;
+    font-size: var(--font-size-base);
     margin-bottom: 5px;
   }
   
   .disclaimer {
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     color: #95a5a6;
   }
 }

@@ -41,6 +41,7 @@ src/views/<一级菜单>/<二级菜单>/index.vue
 交付前对照清单逐项自查，并把自查结果逐条回报给用户（满足打 ✓，未满足说明原因）：
 
 - [ ] 样式：优先复用 `src/assets/css/global.scss` 公共类，页面内无重复定义
+- [ ] 样式变量：被多处复用的样式值已提取到 `src/assets/css/variables.scss`，页面内无散落硬编码重复值
 - [ ] 组件：优先 Element Plus（`el-*`），无原生 `<button>/<input>/<select>` 代替（合理例外除外）
 - [ ] 类型：统一定义在 `src/types`，页面内无零散重复类型
 - [ ] 工具：公共方法已提取到 `src/utils`，页面内无重复逻辑
@@ -114,6 +115,7 @@ src/utils/
 ```
 src/assets/
 └─ css/
+   ├─ variables.scss # 统一样式变量：全站共享的 CSS 自定义属性集中定义（主题色/文字色/字号/布局尺寸等）
    ├─ index.scss    # 工程基础样式：*reset、body/html/#app、滚动条等（优先级最低，兜底）
    ├─ element.scss  # Element Plus 组件样式统一覆盖（仅全站统一需要调整的组件）
    └─ global.scss   # 工具页公共布局类：内容区全高 + 卡片撑满 + 输入框/表格内部滚动
@@ -122,16 +124,32 @@ src/assets/
 - 新资源按类型放入对应子目录：图片 `img/`（内部可再按业务分子目录）、图标 `icon/`、主题 `themes/` 等
 - 样式文件引入统一走 `@/assets/css/...`，不要分散在 `src/styles` 等目录
 
-## 样式分层规则（assets/css 四类文件）
+## 样式分层规则（assets/css 五类文件）
 
-工程样式按职责分四层，优先级从低到高（main.ts 引入顺序：element 官方 css → index.scss → element.scss → global.scss；layout 样式由 layout/index.vue 引入）：
+工程样式按职责分五层，优先级从低到高（main.ts 引入顺序：element 官方 css → variables.scss → index.scss → element.scss → global.scss；layout 样式由 layout/index.vue 引入）：
 
 | 文件 | 职责 | 约定 |
 | --- | --- | --- |
+| `src/assets/css/variables.scss` | 统一样式变量：全站共享的 CSS 自定义属性（主题色、文字色、边框、字号、布局尺寸等） | 最先引入，所有样式/组件均可 `var()` 引用；见「统一样式变量规则」 |
 | `src/assets/css/index.scss` | 工程基础兜底：`*{}` reset、`body`/`html`/`#app`、滚动条等 | 优先级最低，被后续样式覆盖 |
 | `src/assets/css/element.scss` | Element Plus 组件样式统一覆盖 | 仅放「全站统一」需要调整的组件样式；只有单个业务页需要时，写在对应页面的 `<style>` 中，不写入此文件 |
 | `src/assets/css/global.scss` | 工具页公共布局类（`.container`/`.tool-card` 等） | 见下方「工具页公共布局类」 |
 | `src/layout/style/index.scss` | 布局壳样式（`.app-wrapper`/`.main-container`） | 只放布局，不放业务独有样式；html/body 等基础样式引用 index.scss，不重复定义 |
+
+## 统一样式变量规则（src/assets/css/variables.scss）
+
+被 2 个及以上业务菜单（或布局）共用的样式值——主题色、文字色、边框色、填充色、字号、布局尺寸、代码字体、按钮宽度等——一律提取为 CSS 自定义属性，统一定义在 `src/assets/css/variables.scss` 的 `:root` 中集中存放，业务代码通过 `var(--xxx)` 引用，**禁止在页面/组件内散落硬编码重复值**。
+
+- 判断标准：同一值被 2 个及以上业务菜单（或布局）使用 → 提取；仅单个业务页使用 → 就地书写，不要过早抽象。
+- `variables.scss` 由 `src/main.ts` 最先引入（在 index.scss / element.scss / global.scss 之前），全站样式与组件均可用。
+- 命名分组：
+  - `--layout-*`：布局尺寸（如 `--layout-max-width`、`--navbar-height`）
+  - `--color-*`：主题色（如 `--color-primary` / `--color-success` / `--color-warning` / `--color-danger`）
+  - `--text-*`：文字色（如 `--text-primary` / `--text-regular` / `--text-secondary`）
+  - `--border-*` / `--fill-*`：边框色 / 填充色
+  - `--font-size-*`：字号（如 `--font-size-xs` 至 `--font-size-2xl`）
+  - `--font-code`：代码字体族
+- 修改只需改 variables.scss 一处，全站生效。
 
 ## 样式规则（工具页公共布局类）
 

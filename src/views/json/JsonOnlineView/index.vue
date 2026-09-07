@@ -437,7 +437,7 @@ const genId = (() => {
 .tree-wrap {
   flex: 1;
   min-height: 0;
-  border: 1px solid #e4e7ed;
+  border: 1px solid var(--border-color-light);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -449,13 +449,13 @@ const genId = (() => {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  color: #909399;
+  color: var(--text-secondary);
   cursor: pointer;
   user-select: none;
   transition: color 0.15s;
 
   &:hover {
-    color: #409eff;
+    color: var(--color-primary);
   }
 }
 
@@ -479,8 +479,8 @@ const genId = (() => {
 }
 
 .search-count {
-  font-size: 12px;
-  color: #909399;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
   margin-right: 4px;
   white-space: nowrap;
 }
@@ -493,21 +493,21 @@ const genId = (() => {
   height: 20px;
   margin-left: 2px;
   cursor: pointer;
-  color: #606266;
+  color: var(--text-regular);
   border-radius: 3px;
 
   &:hover {
-    background: #e4e7ed;
-    color: #409eff;
+    background: var(--border-color-light);
+    color: var(--color-primary);
   }
 
   &.is-disabled {
-    color: #c0c4cc;
+    color: var(--border-color-lighter);
     cursor: not-allowed;
 
     &:hover {
       background: transparent;
-      color: #c0c4cc;
+      color: var(--border-color-lighter);
     }
   }
 }

@@ -66,12 +66,12 @@ const copyColor = (hex) => {
 }
 
 .group-title {
-  font-size: 20px;
+  font-size: var(--font-size-xl);
   font-weight: 600;
-  color: #303133;
+  color: var(--text-primary);
   margin: 0 0 20px;
   padding-left: 12px;
-  border-left: 4px solid #409eff;
+  border-left: 4px solid var(--color-primary);
   line-height: 1.4;
 }
 
@@ -88,15 +88,15 @@ const copyColor = (hex) => {
 }
 
 .category-title {
-  font-size: 16px;
+  font-size: var(--font-size-lg);
   font-weight: 600;
-  color: #303133;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .category-desc {
-  font-size: 13px;
-  color: #909399;
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
   margin: 4px 0 0;
 }
 
@@ -127,7 +127,7 @@ const copyColor = (hex) => {
     color: #fff;
     padding: 2px 8px;
     border-radius: 3px;
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     font-family: monospace;
   }
 }

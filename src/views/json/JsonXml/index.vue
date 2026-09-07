@@ -279,18 +279,18 @@ const clearAll = () => {
 // 输入/输出框：代码字体 + 禁止拖拽缩放（撑满布局由全局 .textarea-input 提供）
 .convert-textarea {
   :deep(.el-textarea__inner) {
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-code);
     resize: none;
   }
 }
 
 // 格式校验状态：输入框边框颜色
 .convert-textarea.state-valid :deep(.el-textarea__inner) {
-  border-color: #67c23a;
+  border-color: var(--color-success);
 }
 
 .convert-textarea.state-invalid :deep(.el-textarea__inner) {
-  border-color: #f56c6c;
+  border-color: var(--color-danger);
 }
 
 // 输入框下方格式状态提示
@@ -298,16 +298,16 @@ const clearAll = () => {
   flex-shrink: 0;
   min-height: 20px;
   margin-top: 4px;
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   line-height: 20px;
   color: transparent;
 
   &.status-valid {
-    color: #67c23a;
+    color: var(--color-success);
   }
 
   &.status-invalid {
-    color: #f56c6c;
+    color: var(--color-danger);
   }
 }
 
