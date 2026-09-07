@@ -308,30 +308,6 @@ const syncScroll = (side) => {
 </script>
 
 <style scoped lang="scss">
-.json-compare-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; // 覆盖全局 .container 的 padding，仅保留左右边距
-}
-
-.json-compare-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0; // 覆盖全局 .tool-card 的 padding: 24px
-  margin-bottom: 0; // 覆盖全局 .tool-card 的 margin-bottom: 20px
-
-  :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px;
-  }
-}
-
 // web：左一右布局
 .compare-area {
   flex: 1;
@@ -496,10 +472,6 @@ const syncScroll = (side) => {
 
 // H5：上一下布局
 @media (max-width: 768px) {
-  .json-compare-container {
-    padding: 0 15px;
-  }
-
   .compare-area {
     gap: 10px;
   }

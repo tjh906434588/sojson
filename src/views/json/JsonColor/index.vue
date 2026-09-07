@@ -234,33 +234,10 @@ const formatJson = () => {
 </script>
 
 <style scoped lang="scss">
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px;
-}
-
-.tool-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0;
-  margin-bottom: 0;
-
-  :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px;
-  }
-}
-
 .textarea-input {
   margin: 0;
-  flex-shrink: 0;
+  // 固定高度输入框：不随卡片撑满（覆盖全局 .textarea-input 的 flex: 1）
+  flex: none;
 }
 
 // 中间控制区：一行展示

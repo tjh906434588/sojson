@@ -1,11 +1,5 @@
 // 默认布局样式（由 src/layout/index.vue 全局引入）
-
-html,
-body {
-  height: 100%;
-  max-width: 100%;
-  overflow: hidden;
-}
+// 只放布局壳样式；html/body/#app 等基础样式见 src/assets/css/index.scss
 
 .app-wrapper {
   height: 100vh;

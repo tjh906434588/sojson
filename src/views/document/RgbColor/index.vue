@@ -204,31 +204,6 @@ const colors = [
 </script>
 
 <style scoped lang="scss">
-// 内容区全高、卡片撑满、表格填充并内部滚动
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; // 覆盖全局 .container 的 padding，仅保留左右边距
-}
-
-.tool-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0; // 覆盖全局 .tool-card 的 padding: 24px
-  margin-bottom: 0; // 覆盖全局 .tool-card 的 margin-bottom: 20px
-
-  :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px;
-  }
-}
-
 // 颜色选择器 + RGB/Hex 输入框
 .picker-row {
   display: flex;
@@ -241,18 +216,6 @@ const colors = [
     flex: 1;
     min-width: 160px;
     max-width: 280px;
-  }
-}
-
-.table-wrap {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-
-  :deep(.el-table) {
-    flex: 1;
-    width: 100%;
   }
 }
 

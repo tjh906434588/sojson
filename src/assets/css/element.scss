@@ -1,0 +1,16 @@
+// Element Plus 组件样式统一覆盖（工程级全局调整）
+// 约定：仅放全站统一需要调整的组件样式；
+// 若只有单个业务页需要调整，则写在对应页面的 <style> 中，不写入本文件
+
+.el-button + .el-button {
+  margin-left: 0 !important;
+}
+
+.el-form-item .el-form-item__content {
+  flex-wrap: wrap;
+}
+
+.el-select-dropdown__wrap {
+  max-width: 100%;
+  overflow-x: hidden;
+}

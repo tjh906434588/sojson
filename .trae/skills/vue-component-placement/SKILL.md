@@ -76,11 +76,46 @@ src/utils/
 ```
 src/assets/
 └─ css/
-   └─ global.scss   # 全局样式（src/main.ts 中 import './assets/css/global.scss'）
+   ├─ index.scss    # 工程基础样式：*reset、body/html/#app、滚动条等（优先级最低，兜底）
+   ├─ element.scss  # Element Plus 组件样式统一覆盖（仅全站统一需要调整的组件）
+   └─ global.scss   # 工具页公共布局类：内容区全高 + 卡片撑满 + 输入框/表格内部滚动
 ```
 
 - 新资源按类型放入对应子目录：图片 `img/`（内部可再按业务分子目录）、图标 `icon/`、主题 `themes/` 等
 - 样式文件引入统一走 `@/assets/css/...`，不要分散在 `src/styles` 等目录
+
+## 样式分层规则（assets/css 四类文件）
+
+工程样式按职责分四层，优先级从低到高（main.ts 引入顺序：element 官方 css → index.scss → element.scss → global.scss；layout 样式由 layout/index.vue 引入）：
+
+| 文件 | 职责 | 约定 |
+| --- | --- | --- |
+| `src/assets/css/index.scss` | 工程基础兜底：`*{}` reset、`body`/`html`/`#app`、滚动条等 | 优先级最低，被后续样式覆盖 |
+| `src/assets/css/element.scss` | Element Plus 组件样式统一覆盖 | 仅放「全站统一」需要调整的组件样式；只有单个业务页需要时，写在对应页面的 `<style>` 中，不写入此文件 |
+| `src/assets/css/global.scss` | 工具页公共布局类（`.container`/`.tool-card` 等） | 见下方「工具页公共布局类」 |
+| `src/layout/style/index.scss` | 布局壳样式（`.app-wrapper`/`.main-container`） | 只放布局，不放业务独有样式；html/body 等基础样式引用 index.scss，不重复定义 |
+
+## 样式规则（工具页公共布局类）
+
+工具页「内容区全高 + 卡片撑满 + 输入框/表格内部滚动」的布局类统一定义在 `src/assets/css/global.scss`，页面直接使用标准类名，**禁止在页面内重复定义**：
+
+| 类名 | 作用 |
+| --- | --- |
+| `.container` | 内容区全高容器（`height: 100%` flex 列；H5 下左右 15px 边距由全局媒体查询处理） |
+| `.tool-card` | 卡片撑满剩余高度，内容区在卡片内部滚动（`.el-card__body` 已由全局处理） |
+| `.textarea-input` / `.textarea-output` | 输入/输出框撑满剩余空间，按钮组固定在底部 |
+| `.button-group` | 按钮组（Web 等宽网格、H5 一排三个由全局媒体查询处理） |
+| `.table-wrap` | 表格容器撑满剩余空间，表格内部滚动 |
+| `.copyable` | 可点击复制的列内容（含 `.copy-icon`） |
+| `.hidden-file` | 隐藏的文件选择输入框 |
+
+约定：
+
+- 标准布局页面：模板直接用上述类名，`<style>` 中只写页面特有样式（如 `.tool-alert`、列样式、校验态等），不要重复定义这些布局类。
+- 需要额外间距/字体等差异时，只写差异部分：如卡片内容区间距用 `.tool-card { :deep(.el-card__body) { gap: 20px } }`，代码字体用 `.textarea-input { :deep(.el-textarea__inner) { font-family: ... } }`。
+- 固定高度（不撑满）的输入框必须显式覆盖全局默认的 `flex: 1`：写 `flex: none`（如 JsonColor 的输入框、EncryptDecrypt 的 MD5 输入框）。
+- 落地页（一级菜单 `index.vue` 的 ToolCardGrid）使用组件内 `.grid-container` 居中容器，不使用 `.container`。
+- 新增页面如需这些布局，直接复用全局类；只有复用类无法满足时，才在页面内写局部样式。
 
 `public` 存放不参与打包压缩、会被 vite 原样拷贝到 `dist` 的静态文件与构建期脚本：
 

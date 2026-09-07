@@ -382,30 +382,6 @@ const genId = (() => {
 </script>
 
 <style scoped lang="scss">
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px;
-}
-
-.tool-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0;
-  margin-bottom: 0;
-
-  :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px;
-  }
-}
-
 .split-panel {
   flex: 1;
   display: flex;

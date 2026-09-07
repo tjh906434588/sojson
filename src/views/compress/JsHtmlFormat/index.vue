@@ -243,31 +243,6 @@ const handleFile = (e) => {
 </script>
 
 <style scoped lang="scss">
-// 与 JSON 在线工具页面保持一致的撑满布局
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; // 覆盖全局 .container 的 padding，仅保留左右边距
-}
-
-.tool-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0; // 覆盖全局 .tool-card 的 padding: 24px
-  margin-bottom: 0; // 覆盖全局 .tool-card 的 margin-bottom: 20px
-
-  :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px;
-  }
-}
-
 // 输入区撑满剩余空间
 .input-area {
   flex: 1;
@@ -276,37 +251,8 @@ const handleFile = (e) => {
   min-height: 0;
 }
 
-// 输入框撑满剩余空间
-.textarea-input {
-  margin: 0; // 覆盖全局的 margin: 20px 0
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-
-  :deep(.el-textarea) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  :deep(.el-textarea__inner) {
-    flex: 1;
-    height: auto;
-    min-height: 0;
-  }
-}
-
-.hidden-file {
-  display: none;
-}
-
 // 操作组贴近卡片底部
 .button-group {
-  margin-top: 20px;
-  margin-bottom: 0;
-
   .indent-select {
     width: 150px;
   }

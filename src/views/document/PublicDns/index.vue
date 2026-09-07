@@ -148,28 +148,9 @@ const copyDNS = (text) => {
 </script>
 
 <style scoped lang="scss">
-// 内容区全高、卡片撑满、表格填充并内部滚动
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; // 覆盖全局 .container 的 padding，仅保留左右边距
-}
-
 .tool-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0; // 覆盖全局 .tool-card 的 padding: 24px
-  margin-bottom: 0; // 覆盖全局 .tool-card 的 margin-bottom: 20px
-
+  // 全局 .tool-card 提供撑满布局，此处仅补充卡片内容区上下分区间距
   :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px;
     gap: 20px;
   }
 }
@@ -186,18 +167,6 @@ const copyDNS = (text) => {
   font-size: 16px;
   font-weight: 600;
   color: var(--el-text-color-primary);
-}
-
-.table-wrap {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-
-  :deep(.el-table) {
-    flex: 1;
-    width: 100%;
-  }
 }
 
 // dns1/dns2 列内容：点击可复制，多行地址按行展示

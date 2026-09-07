@@ -336,31 +336,6 @@ const clearAll = () => {
 </script>
 
 <style scoped lang="scss">
-// 页面撑满视口高度，卡片占满剩余空间
-.entity-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; // 覆盖全局 .container 的 padding，仅保留左右边距
-}
-
-.entity-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0; // 覆盖全局 .tool-card 的 padding: 24px
-  margin-bottom: 0; // 覆盖全局 .tool-card 的 margin-bottom: 20px
-
-  :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px; // 卡片内容内边距
-  }
-}
-
 // web：上（左 JSON / 右实体）下（按钮组）两块布局
 .content-area {
   flex: 1;
@@ -412,25 +387,9 @@ const clearAll = () => {
   }
 }
 
-// 输入/输出框撑满所在区域
+// 输入/输出框：代码字体 + 禁止拖拽缩放（撑满布局由全局 .textarea-input 提供）
 .entity-textarea {
-  margin: 0; // 覆盖全局 .textarea-input 的 margin: 20px 0
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-
-  :deep(.el-textarea) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
   :deep(.el-textarea__inner) {
-    flex: 1;
-    height: auto;
-    min-height: 0;
     font-family: 'Courier New', monospace;
     resize: none;
   }
@@ -465,10 +424,6 @@ const clearAll = () => {
 
 // H5：上（JSON）/中（按钮）/下（实体）布局
 @media (max-width: 768px) {
-  .entity-container {
-    padding: 0 15px;
-  }
-
   .content-area {
     grid-template-areas:
       'input'

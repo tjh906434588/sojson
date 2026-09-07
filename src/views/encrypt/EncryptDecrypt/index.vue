@@ -203,31 +203,6 @@ const clearAll = () => {
 </script>
 
 <style scoped lang="scss">
-// 卡片跟随内容区高度
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; // 覆盖全局 .container 的 padding，仅保留左右边距
-}
-
-.tool-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0; // 覆盖全局 .tool-card 的 padding: 24px
-  margin-bottom: 0; // 覆盖全局 .tool-card 的 margin-bottom: 20px
-
-  :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px;
-  }
-}
-
 // 左中右三栏布局
 .encrypt-layout {
   flex: 1;
@@ -287,28 +262,6 @@ const clearAll = () => {
   }
 }
 
-// 明文/密文输入框撑满面板剩余高度
-.textarea-input {
-  margin: 0; // 覆盖全局 .textarea-input 的 margin: 20px 0
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-
-  :deep(.el-textarea) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  :deep(.el-textarea__inner) {
-    flex: 1;
-    height: auto;
-    min-height: 0;
-  }
-}
-
 // MD5：输入框 + 四种结果
 .md5-panel {
   flex: 1;
@@ -318,7 +271,8 @@ const clearAll = () => {
   min-height: 0;
 
   .md5-input {
-    flex-shrink: 0;
+    // 固定高度输入框：不随卡片撑满（覆盖全局 .textarea-input 的 flex: 1）
+    flex: none;
     height: 40%;
   }
 }

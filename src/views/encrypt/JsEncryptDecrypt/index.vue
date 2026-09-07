@@ -215,28 +215,9 @@ const clear = () => {
 </script>
 
 <style scoped lang="scss">
-// 卡片跟随内容区高度，上中下三段布局
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; // 覆盖全局 .container 的 padding，仅保留左右边距
-}
-
 .tool-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0; // 覆盖全局 .tool-card 的 padding: 24px
-  margin-bottom: 0; // 覆盖全局 .tool-card 的 margin-bottom: 20px
-
+  // 全局 .tool-card 提供撑满布局，此处仅补充卡片内容区上下间距
   :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px;
     gap: 16px;
   }
 }
@@ -254,33 +235,13 @@ const clear = () => {
   flex: 1;
 }
 
-// 代码文本域撑满区域高度
+// 代码文本域：撑满布局由全局 .textarea-input 提供，此处仅补充代码字体
 .textarea-input {
-  margin: 0; // 覆盖全局 .textarea-input 的 margin: 20px 0
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-
-  :deep(.el-textarea) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
   :deep(.el-textarea__inner) {
-    flex: 1;
-    height: auto;
-    min-height: 0;
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 13px;
     line-height: 1.5;
   }
-}
-
-.hidden-file {
-  display: none;
 }
 
 // 中间控制区

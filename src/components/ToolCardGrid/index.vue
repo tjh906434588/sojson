@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="container">
+    <div class="grid-container">
       <el-row :gutter="20" class="tool-grid">
         <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="tool in tools" :key="tool.path">
           <router-link :to="tool.path" class="tool-link">
@@ -32,6 +32,14 @@ defineProps<{
 <style scoped lang="scss">
 .home {
   padding: 0;
+}
+
+// 落地页卡片网格容器：居中 + 左右留白（工具页的撑满布局类不适用）
+.grid-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
 }
 
 .tool-grid {
@@ -77,6 +85,13 @@ defineProps<{
       font-size: 14px;
       margin: 0;
     }
+  }
+}
+
+// H5：左右留白，避免卡片贴边
+@media (max-width: 768px) {
+  .grid-container {
+    padding: 0 15px;
   }
 }
 </style>

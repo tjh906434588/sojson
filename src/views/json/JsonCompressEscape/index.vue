@@ -341,60 +341,6 @@ const clearJson = () => {
 </script>
 
 <style scoped lang="scss">
-// 卡片白色区域跟随内容模块高度（内容区 = 视口 - 菜单栏 - 底部栏 - 上下 20px）
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px; // 覆盖全局 .container 的 padding，仅保留左右边距
-}
-
-.tool-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0; // 覆盖全局 .tool-card 的 padding: 24px
-  margin-bottom: 0; // 覆盖全局 .tool-card 的 margin-bottom: 20px
-
-  // el-card 内容实际在 body 内，需要让 body 撑满卡片高度
-  :deep(.el-card__body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    padding: 20px; // 卡片内容内边距
-  }
-}
-
-// 文本框撑满卡片剩余空间，按钮组固定在底部，避免内容区留大片空白
-.textarea-input {
-  margin: 0; // 覆盖全局 .textarea-input 的 margin: 20px 0
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-
-  :deep(.el-textarea) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  :deep(.el-textarea__inner) {
-    flex: 1;
-    height: auto;
-    min-height: 0;
-  }
-}
-
-// 按钮组贴近卡片底部，消除下方多余空白
-.button-group {
-  margin-top: 20px;
-  margin-bottom: 0;
-}
-
 // Web 模式下「中文符号转英文符号」文字较长，占两列避免文字贴边
 @media (min-width: 769px) {
   .button-group .btn-symbol {
