@@ -55,27 +55,14 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { ElMessage } from 'element-plus'
 import { CopyDocument } from '@element-plus/icons-vue'
+import { copyToClipboard } from '@/utils'
 
 const { t } = useI18n()
 
 // 点击列内容自动复制
 const copyText = (text) => {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text)
-  } else {
-    // 兼容非安全上下文（如 http 环境）的回退方案
-    const ta = document.createElement('textarea')
-    ta.value = text
-    ta.style.position = 'fixed'
-    ta.style.opacity = '0'
-    document.body.appendChild(ta)
-    ta.select()
-    document.execCommand('copy')
-    document.body.removeChild(ta)
-  }
-  ElMessage.success(t('common.copied'))
+  copyToClipboard(text, t('common.copied'))
 }
 
 const entities = [
@@ -183,7 +170,7 @@ const entities = [
 </script>
 
 <style scoped lang="scss">
-// 参考 MimeType 页面样式：内容区全高、卡片撑满、表格填充并内部滚动
+// 内容区全高、卡片撑满、表格填充并内部滚动
 .container {
   height: 100%;
   display: flex;

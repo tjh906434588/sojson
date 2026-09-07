@@ -55,14 +55,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useIsMobile } from '@/utils'
 
 const { t } = useI18n()
 
 const leftText = ref('')
 const rightText = ref('')
-const isMobile = ref(false)
+const isMobile = useIsMobile()
 
 const taLeft = ref(null)
 const taRight = ref(null)
@@ -304,19 +305,6 @@ const syncScroll = (side) => {
     hl.scrollLeft = ta.scrollLeft
   }
 }
-
-const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768
-}
-
-onMounted(() => {
-  checkMobile()
-  window.addEventListener('resize', checkMobile)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', checkMobile)
-})
 </script>
 
 <style scoped lang="scss">

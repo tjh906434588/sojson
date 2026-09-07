@@ -68,6 +68,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
+import { copyToClipboard } from '@/utils'
 import { Check, CopyDocument, Delete, Download } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
@@ -215,8 +216,7 @@ const copy = () => {
     ElMessage.warning(t('tools.caseConvert.copyEmpty'))
     return
   }
-  navigator.clipboard.writeText(output.value)
-  ElMessage.success(t('common.copied'))
+  copyToClipboard(output.value, t('common.copied'))
 }
 
 const clear = () => {
@@ -248,7 +248,7 @@ const exportText = () => {
 </script>
 
 <style scoped lang="scss">
-// 参考 JSON 解析页：卡片白色区域跟随内容高度（内容区 = 视口 - 菜单栏 - 底部栏 - 上下 20px）
+// 卡片白色区域跟随内容高度（内容区 = 视口 - 菜单栏 - 底部栏 - 上下 20px）
 .container {
   height: 100%;
   display: flex;

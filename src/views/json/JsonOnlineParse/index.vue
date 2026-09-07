@@ -59,10 +59,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import JsonTree from './components/JsonTree.vue'
+import { useIsMobile, copyToClipboard } from '@/utils'
 
 const { t } = useI18n()
 
@@ -71,7 +72,7 @@ const parsedData = ref(null)
 const lastAction = ref(null) // 'format' | 'compress'
 const errorMessage = ref('')
 const layoutMode = ref('horizontal')
-const isMobile = ref(false)
+const isMobile = useIsMobile()
 const leftRatio = ref(50)
 const highlight = ref(false)
 const showType = ref(false)
@@ -108,16 +109,11 @@ const stopDrag = () => {
   window.removeEventListener('pointerup', stopDrag)
 }
 
-const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768
-  if (isMobile.value) layoutMode.value = 'vertical'
-}
-onMounted(() => {
-  checkMobile()
-  window.addEventListener('resize', checkMobile)
-})
+// H5 下强制单栏布局
+watch(isMobile, (v) => {
+  if (v) layoutMode.value = 'vertical'
+}, { immediate: true })
 onUnmounted(() => {
-  window.removeEventListener('resize', checkMobile)
   stopDrag()
 })
 
@@ -211,8 +207,7 @@ const copyResult = () => {
     ElMessage.warning(t('tools.jsonOnlineParse.copyEmpty'))
     return
   }
-  navigator.clipboard.writeText(text)
-  ElMessage.success(t('common.success'))
+  copyToClipboard(text, t('common.success'))
 }
 </script>
 

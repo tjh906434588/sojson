@@ -84,22 +84,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ElMessage } from 'element-plus'
 import { CopyDocument } from '@element-plus/icons-vue'
 import regionalDnsData from '@/config/regionalDns'
+import { useIsMobile, copyToClipboard } from '@/utils'
 
 const { t } = useI18n()
 
-// H5 断点检测（≤768px）：桌面端 IP 列固定窄宽，H5 保持自适应
-const isMobile = ref(false)
-const updateIsMobile = () => {
-  isMobile.value = window.innerWidth <= 768
-}
-updateIsMobile()
-window.addEventListener('resize', updateIsMobile)
-onUnmounted(() => window.removeEventListener('resize', updateIsMobile))
+// H5 断点检测：桌面端 IP 列固定窄宽，H5 保持自适应
+const isMobile = useIsMobile()
 
 // 桌面端 IP 列宽：最长 IP 文本(15字符/14px) 100px + 单元格 padding 24px + 少量余量
 const ipColWidth = 128
@@ -144,30 +138,17 @@ const dnsServers = ref([
   }
 ])
 
-// 各地公共DNS列表（数据见 regionalDns.js，共 381 条）
+// 各地公共DNS列表（数据见 src/config/regionalDns.ts，共 381 条）
 const regionalDns = ref(regionalDnsData)
 
 // 点击 dns1/dns2 列内容复制
 const copyDNS = (text) => {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text)
-  } else {
-    // 兼容非安全上下文（如 http 环境）的回退方案
-    const ta = document.createElement('textarea')
-    ta.value = text
-    ta.style.position = 'fixed'
-    ta.style.opacity = '0'
-    document.body.appendChild(ta)
-    ta.select()
-    document.execCommand('copy')
-    document.body.removeChild(ta)
-  }
-  ElMessage.success(t('tools.publicDns.dnsCopied'))
+  copyToClipboard(text, t('tools.publicDns.dnsCopied'))
 }
 </script>
 
 <style scoped lang="scss">
-// 参考 MimeType 页面样式：内容区全高、卡片撑满、表格填充并内部滚动
+// 内容区全高、卡片撑满、表格填充并内部滚动
 .container {
   height: 100%;
   display: flex;

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsx scripts/generate-netlify-forms.ts && vite build",
+    "build": "tsx public/scripts/generate-netlify-forms.ts && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -7,7 +7,7 @@ import en from 'element-plus/dist/locale/en.mjs'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import router from './router'
 import App from './App.vue'
-import './styles/global.scss'
+import './assets/css/global.scss'
 import i18n from './locales'
 
 const app = createApp(App)

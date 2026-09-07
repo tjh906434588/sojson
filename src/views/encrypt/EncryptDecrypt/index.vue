@@ -78,6 +78,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
+import { copyToClipboard } from '@/utils'
 import CryptoJS from 'crypto-js'
 
 const { t } = useI18n()
@@ -177,8 +178,7 @@ const copyText = (text) => {
     ElMessage.warning(t('tools.encryptDecrypt.copyEmpty'))
     return
   }
-  navigator.clipboard.writeText(text)
-  ElMessage.success(t('common.copied'))
+  copyToClipboard(text, t('common.copied'))
 }
 
 const copyResult = () => {
@@ -203,7 +203,7 @@ const clearAll = () => {
 </script>
 
 <style scoped lang="scss">
-// 参考 JSON 解析页面样式：卡片跟随内容区高度
+// 卡片跟随内容区高度
 .container {
   height: 100%;
   display: flex;

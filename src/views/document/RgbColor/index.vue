@@ -68,9 +68,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ElMessage } from 'element-plus'
+import { useIsMobile, copyToClipboard } from '@/utils'
 
 const { t } = useI18n()
 
@@ -78,14 +78,8 @@ const selectedColor = ref('#409EFF')
 const rgbValue = ref('64 158 255')
 const hexValue = ref('#409EFF')
 
-// H5 断点检测（≤768px）：表头文案随模式切换
-const isMobile = ref(false)
-const updateIsMobile = () => {
-  isMobile.value = window.innerWidth <= 768
-}
-updateIsMobile()
-window.addEventListener('resize', updateIsMobile)
-onUnmounted(() => window.removeEventListener('resize', updateIsMobile))
+// H5 断点检测：表头文案随模式切换
+const isMobile = useIsMobile()
 
 const hexToRgb = (hex) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -152,20 +146,7 @@ const selectColor = (row) => {
 
 // 复制 RGB / 16色 列内容
 const copyText = (text) => {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text)
-  } else {
-    // 兼容非安全上下文（如 http 环境）的回退方案
-    const ta = document.createElement('textarea')
-    ta.value = text
-    ta.style.position = 'fixed'
-    ta.style.opacity = '0'
-    document.body.appendChild(ta)
-    ta.select()
-    document.execCommand('copy')
-    document.body.removeChild(ta)
-  }
-  ElMessage.success(t('common.copied'))
+  copyToClipboard(text, t('common.copied'))
 }
 
 const colors = [
@@ -223,7 +204,7 @@ const colors = [
 </script>
 
 <style scoped lang="scss">
-// 参考 MimeType 页面样式：内容区全高、卡片撑满、表格填充并内部滚动
+// 内容区全高、卡片撑满、表格填充并内部滚动
 .container {
   height: 100%;
   display: flex;

@@ -67,6 +67,7 @@
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
+import { copyToClipboard } from '@/utils'
 import { MagicStick, CopyDocument, Delete } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
@@ -321,8 +322,7 @@ const copyResult = () => {
     ElMessage.warning(t('tools.jsonEntity.copyEmpty'))
     return
   }
-  navigator.clipboard.writeText(output.value)
-  ElMessage.success(t('common.success'))
+  copyToClipboard(output.value, t('common.success'))
 }
 
 const clearAll = () => {

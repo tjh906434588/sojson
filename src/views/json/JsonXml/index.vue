@@ -54,17 +54,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { Delete } from '@element-plus/icons-vue'
+import { useIsMobile } from '@/utils'
 
 const { t } = useI18n()
 
 const jsonInput = ref('')
 const xmlInput = ref('')
 const errorMessage = ref('')
-const isMobile = ref(false)
+const isMobile = useIsMobile()
 
 // 各输入框格式状态：null=未校验/空 | 'valid'=格式正确 | 'invalid'=格式错误
 const jsonState = ref(null)
@@ -251,19 +252,6 @@ const clearAll = () => {
   xmlState.value = null
   errorMessage.value = ''
 }
-
-const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768
-}
-
-onMounted(() => {
-  checkMobile()
-  window.addEventListener('resize', checkMobile)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', checkMobile)
-})
 </script>
 
 <style scoped lang="scss">

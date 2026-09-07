@@ -2,7 +2,7 @@
   <header class="navbar">
     <div class="navbar-container">
       <div class="navbar-left">
-        <router-link :to="ROUTE_HOME" class="logo">
+        <router-link :to="firstMenuLink" class="logo">
           <el-icon :size="24"><Tools /></el-icon>
           <span class="logo-text">{{ $t('common.title') }}</span>
         </router-link>
@@ -126,11 +126,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useAppStore } from '../store/app'
-import { ROUTE_HOME } from '@/router/modules/home'
+import { useAppStore } from '@/store/app'
 import { jsonMenu } from '@/router/modules/json'
 import { encryptMenu } from '@/router/modules/encrypt'
 import { compressMenu } from '@/router/modules/compress'
@@ -140,6 +139,7 @@ import { convertMenu } from '@/router/modules/convert'
 import { otherMenu } from '@/router/modules/other'
 import { ArrowDown, ArrowUp, Menu, Tools } from '@element-plus/icons-vue'
 import type { NavMenuGroup } from '@/types'
+import { useIsMobile } from '@/utils'
 
 const router = useRouter()
 const route = useRoute()
@@ -150,7 +150,7 @@ const selectedLang = ref(locale.value)
 const isMobileMenuOpen = ref(false)
 // H5：各一级菜单的二级展开状态（key: boolean）
 const mobileSubOpenMap = ref({})
-const isMobile = ref(false)
+const isMobile = useIsMobile()
 
 // 一级菜单数据由各菜单路由模块（@/router/<菜单>）提供，业务侧不再自行维护菜单列表
 // hidden: true 表示“屏蔽”——保留但隐藏，不参与展示
@@ -164,11 +164,14 @@ const menus: NavMenuGroup[] = [
   otherMenu
 ]
 
+// 项目无独立首页，logo 点击直接导航到第一个一级菜单（当前为 JSON 工具）
+const firstMenuLink = menus[0].link
+
 const activeMenu = computed(() => {
   // 组首页（如 /json、/encrypt、/compress、/document、/frontend）高亮对应一级菜单
-  const groupHomePaths = [ROUTE_HOME, ...menus.map((m) => m.link)]
+  const groupHomePaths = menus.map((m) => m.link)
   if (groupHomePaths.includes(route.path)) {
-    const key = route.path === ROUTE_HOME ? 'json' : route.path.split('/')[1]
+    const key = route.path.split('/')[1]
     return isMobile.value ? '/' + key : key
   }
   return route.path
@@ -219,21 +222,10 @@ const handleMenuSelect = (index) => {
   }
 }
 
-const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768
-  if (!isMobile.value) {
-    isMobileMenuOpen.value = false
-  }
-}
-
-onMounted(() => {
-  checkMobile()
-  window.addEventListener('resize', checkMobile)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', checkMobile)
-})
+// 桌面端自动收起移动端菜单
+watch(isMobile, (v) => {
+  if (!v) isMobileMenuOpen.value = false
+}, { immediate: true })
 </script>
 
 <style scoped lang="scss">

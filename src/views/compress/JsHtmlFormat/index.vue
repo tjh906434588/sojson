@@ -56,6 +56,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
+import { copyToClipboard } from '@/utils'
 import { Upload, MagicStick, Minus, Lock, Delete, CopyDocument, Download } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
@@ -189,8 +190,7 @@ const copy = () => {
     ElMessage.warning(t('tools.jsHtmlFormat.copyEmpty'))
     return
   }
-  navigator.clipboard.writeText(input.value)
-  ElMessage.success(t('common.success'))
+  copyToClipboard(input.value, t('common.success'))
 }
 
 // 保存本地：优先使用上传时的文件名，否则按内容判断扩展名

@@ -4,7 +4,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { Tools } from '@element-plus/icons-vue'
 import type { ToolItem, NavMenuGroup } from '@/types'
-import { ROUTE_HOME } from './home'
 
 // —— 路径定义 ——
 export const ROUTE_JSON = '/json'
@@ -51,7 +50,7 @@ export const jsonMenu: NavMenuGroup = {
   title: 'menu.jsonTools',
   icon: Tools,
   link: ROUTE_JSON,
-  exact: [ROUTE_HOME, ROUTE_JSON],
+  exact: [ROUTE_JSON],
   prefix: ROUTE_JSON,
   hidden: false,
   items: jsonToolCards.map((c) => ({ path: c.path, label: c.title }))

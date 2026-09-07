@@ -94,7 +94,7 @@ const submitFeedback = async () => {
 </script>
 
 <style scoped lang="scss">
-// 参考其他二级菜单页面：内容区全高、卡片撑满、内容在卡片内滚动
+// 内容区全高、卡片撑满、内容在卡片内滚动
 .container {
   height: 100%;
   display: flex;

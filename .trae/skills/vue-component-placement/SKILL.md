@@ -1,6 +1,6 @@
 ---
 name: "vue-component-placement"
-description: "项目开发规范：TypeScript 全量使用 + src/types 统一类型定义 + 路由集中定义（src/router 按一级菜单拆分模块）+ 组件三级存放（页面私有/一级共享/全局兜底）+ 一级/二级菜单创建（目录、路由、卡片、i18n）。Invoke when organizing components, adding menus/pages, defining types, or writing TS code under src."
+description: "项目开发规范：TypeScript 全量使用 + src/types 统一类型定义 + src/utils 公共方法提取 + 路由集中定义（src/router 按一级菜单拆分模块）+ 页面布局（src/layout 默认布局）+ 组件三级存放（页面私有/一级共享/全局兜底）+ 一级/二级菜单创建（目录、路由、卡片、i18n）。Invoke when organizing components, adding menus/pages, defining types, extracting shared utils, or writing TS code under src."
 ---
 
 # 项目开发规范（Project Conventions）
@@ -10,6 +10,14 @@ description: "项目开发规范：TypeScript 全量使用 + src/types 统一类
 ```
 src/views/<一级菜单>/<二级菜单>/index.vue
 ```
+
+## 文案规范（禁止「参考 XXX」）
+
+项目中禁止出现「参考 / 参照 XXX」之类的文字（包括代码注释、文档）。这类文案是 AI 在开发时参考其他页面、项目后留下的过程性说明，项目成型后即为无效噪音。
+
+- 代码注释只描述当前代码本身的作用与逻辑，不要写「参考某页面 / 某项目」的字样。
+- 若想说明某处实现与另一处一致，直接描述该实现方式本身（如「内容区全高、卡片撑满」）。
+- 后续 AI 开发如需参考，仅在对话中进行，不写入项目任何文件（代码、注释、文档）。
 
 ## TypeScript 规则
 
@@ -24,7 +32,7 @@ src/views/<一级菜单>/<二级菜单>/index.vue
 
 ## 类型定义规则（src/types）
 
-所有类型统一在 `src/types` 目录集中定义，再暴露给其他文件使用（参考 xsjktzjc 项目的 types 组织方式）。
+所有类型统一在 `src/types` 目录集中定义，再暴露给其他文件使用。
 
 目录结构：按业务/模块分类，使用 `.d.ts` 声明文件：
 
@@ -45,17 +53,56 @@ src/types/
 - 业务文件通过 `import type { Xxx } from '@/types'` 使用，禁止在组件、页面、业务模块内部散落定义共享类型。
 - 新增类型流程：判断归属模块 → 在 `src/types` 对应文件定义 → 在 `index.d.ts` 汇总导出 → 业务文件 `import type` 使用。
 
+## 公共方法规则（src/utils）
+
+跨业务复用的通用方法统一放在 `src/utils` 目录，统一在 `index.ts` 中定义并导出，避免每个业务重复实现同一段逻辑。
+
+目录结构（当前已有）：
+
+```
+src/utils/
+└─ index.ts   # 公共方法统一入口：useIsMobile()、copyToClipboard()，后续新方法继续追加于此
+```
+
+- 通用方法判断标准：同一段逻辑被 2 个及以上业务重复使用，就应提取到 `src/utils` 统一封装（如 H5 断点检测、剪贴板复制）。
+- 业务文件通过 `import { useIsMobile, copyToClipboard } from '@/utils'` 使用，禁止在页面/组件内重复书写同一段通用逻辑。
+- 需要响应式 + 自动清理的复用逻辑封装成 composable 形式（如 `useIsMobile`，内部管理 resize 监听与 onUnmounted 清理）。
+- 新增公共方法流程：确认被多处复用 → 在 `src/utils/index.ts` 追加并导出 → 业务文件 import 使用；仅单处使用的逻辑就地书写，不要过早抽象。
+
+## 资源目录规则（src/assets / public）
+
+`src/assets` 存放会被打包处理的静态资源（样式、图片、图标等），按资源类型分目录，代码中直接用 `@/assets/<类型>/<文件>` 路径引入：
+
+```
+src/assets/
+└─ css/
+   └─ global.scss   # 全局样式（src/main.ts 中 import './assets/css/global.scss'）
+```
+
+- 新资源按类型放入对应子目录：图片 `img/`（内部可再按业务分子目录）、图标 `icon/`、主题 `themes/` 等
+- 样式文件引入统一走 `@/assets/css/...`，不要分散在 `src/styles` 等目录
+
+`public` 存放不参与打包压缩、会被 vite 原样拷贝到 `dist` 的静态文件与构建期脚本：
+
+```
+public/
+├─ html/            # 静态 html（如 Netlify Forms 表单 __forms.html）
+└─ scripts/         # 构建期 ts 脚本（tsx 直接运行、不被打包，如 generate-netlify-forms.ts）
+```
+
+- 构建期脚本放 `public/scripts/`，在 `package.json` 中通过 `tsx public/scripts/<脚本>.ts` 执行
+- 构建脚本内引用 `src` 的类型/配置时使用相对路径（如 `../../src/types`）
+
 ## 路由定义规则（src/router 按一级菜单拆分）
 
-所有路由集中在 `src/router` 文件夹下，按「一级菜单」拆分成多个路由模块文件（参考 xsjktzjc 项目的 router 组织方式）。每个模块是一个一级菜单的「唯一事实来源」，同时导出：路径常量、路由配置、落地页卡片、NavBar 菜单。
+所有路由集中在 `src/router` 文件夹下，按「一级菜单」拆分成多个路由模块文件。每个模块是一个一级菜单的「唯一事实来源」，同时导出：路径常量、路由配置、落地页卡片、NavBar 菜单。
 
 目录结构：
 
 ```
 src/router/
-├─ index.ts        # 汇总各模块 routes 创建路由实例
-└─ modules/        # 各一级菜单路由模块
-   ├─ home.ts      # 首页：ROUTE_HOME + homeRoutes
+├─ index.ts        # 根路由挂载 src/layout/index.vue，根路径 / 重定向到第一个一级菜单，children 展开各模块 routes
+└─ modules/        # 各一级菜单路由模块（无 home.ts，项目无独立首页）
    ├─ json.ts      # JSON 工具：jsonRoutes + jsonToolCards + jsonMenu
    ├─ encrypt.ts   # 加解密：encryptRoutes + encryptToolCards + encryptMenu
    ├─ compress.ts  # 压缩格式化
@@ -71,7 +118,6 @@ src/router/
 import type { RouteRecordRaw } from 'vue-router'
 import { Tools } from '@element-plus/icons-vue'
 import type { ToolItem, NavMenuGroup } from '@/types'
-import { ROUTE_HOME } from './home'
 
 // ① 路径常量（唯一事实来源，业务侧从这里引入）
 export const ROUTE_JSON = '/json'
@@ -89,14 +135,34 @@ export const jsonToolCards: ToolItem[] = [
 ]
 export const jsonMenu: NavMenuGroup = {
   key: 'json', title: 'menu.jsonTools', icon: Tools,
-  link: ROUTE_JSON, prefix: ROUTE_JSON, exact: [ROUTE_HOME, ROUTE_JSON],
+  link: ROUTE_JSON, prefix: ROUTE_JSON, exact: [ROUTE_JSON],
   items: jsonToolCards.map((c) => ({ path: c.path, label: c.title }))
 }
 ```
 
-- `src/router/index.ts` 用展开符汇总各模块 `xxxRoutes` 创建路由实例。
+- `src/router/index.ts` 根路由 `path: '/'` 挂载 `src/layout/index.vue`（默认布局）；项目无独立首页，`children` 中空路径 `{ path: '', redirect: <第一个一级菜单常量> }`（当前为 `ROUTE_JSON`）直接导航到第一个一级菜单，再用展开符 `...xxxRoutes` 汇总各一级菜单模块的子路由。
 - 业务侧（NavBar、落地页、`router.push`、`<router-link :to>`、路由高亮比较等）**不自行维护菜单/工具列表**，直接 `import { xxxMenu } / { xxxToolCards } / { ROUTE_XXX } from '@/router/modules/<模块>'`，禁止在业务代码中硬编码路径字符串。
 - 修改某个页面路径时，只改对应菜单模块中的路径常量一处即可，路由、卡片、菜单全自动生效。
+
+## 页面布局规则（src/layout）
+
+页面统一结构（默认布局 = NavBar 顶部导航 + 内容区 `router-view` + FooterBar 页脚，顶部导航工具箱、无侧边栏）：
+
+目录结构：
+
+```
+src/layout/
+├─ index.vue              # 默认布局入口（DefaultLayout），含 NavBar + main(router-view) + FooterBar
+├─ components/            # 布局内组件
+│  ├─ NavBar.vue          # 顶部导航（menus 从各路由模块引入，见 NavBar 菜单注册）
+│  └─ FooterBar.vue       # 页脚
+└─ style/
+   └─ index.scss          # 全局布局样式（html/body、.app-wrapper 等）
+```
+
+- `src/router/index.ts` 根路由挂载 `src/layout/index.vue`，各一级菜单路由作为其 `children`；页面只需写业务内容，无需各自重复布局结构。
+- 布局组件（`NavBar.vue`、`FooterBar.vue`）归属 `src/layout/components/`，不属于 `src/components/` 全局组件。
+- `src/App.vue` 仅保留全局注入（`el-config-provider` + `router-view`），不再包含布局骨架代码。
 
 ## 一级 / 二级菜单创建规则
 
@@ -138,16 +204,16 @@ export const jsonRoutes: RouteRecordRaw[] = [
 
 ### 3. 落地页卡片注册（一级菜单模块 <一级菜单>.ts）
 
-卡片数据定义在对应菜单路由模块（如 `src/router/json.ts`）的 `xxxToolCards: ToolItem[]` 中，每个二级菜单加一项；落地页 `index.vue` 直接引入该数组，不再本地维护列表：
+卡片数据定义在对应菜单路由模块（如 `src/router/modules/json.ts`）的 `xxxToolCards: ToolItem[]` 中，每个二级菜单加一项；落地页 `index.vue` 直接引入该数组，不再本地维护列表：
 
 ```ts
-// src/router/json.ts
+// src/router/modules/json.ts
 export const jsonToolCards: ToolItem[] = [
   { path: ROUTE_JSON_ONLINE_VIEW, icon: 'View', title: 'menu.jsonOnlineView', desc: 'tools.jsonOnlineView.description', color: '#909399' }
 ]
 
 // src/views/json/index.vue
-import { jsonToolCards } from '@/router/json'
+import { jsonToolCards } from '@/router/modules/json'
 const tools = jsonToolCards
 ```
 
@@ -157,9 +223,9 @@ const tools = jsonToolCards
 - `desc`：i18n key `tools.<工具名>.description`
 - `color`：卡片主题色
 
-### 4. NavBar 菜单注册（src/components/NavBar.vue）
+### 4. NavBar 菜单注册（src/layout/components/NavBar.vue）
 
-一级菜单在对应路由模块导出 `xxxMenu: NavMenuGroup`（含 icon 组件、link、prefix、items 或 modules）。`src/components/NavBar.vue` 引入该菜单并加入 `menus` 数组（NavBar 不自行维护菜单列表）：
+一级菜单在对应路由模块导出 `xxxMenu: NavMenuGroup`（含 icon 组件、link、prefix、items 或 modules）。`src/layout/components/NavBar.vue` 引入该菜单并加入 `menus` 数组（NavBar 不自行维护菜单列表）：
 
 ```ts
 import { xxxMenu } from '@/router/modules/xxx'
@@ -205,8 +271,11 @@ const menus: NavMenuGroup[] = [jsonMenu, encryptMenu, xxxMenu /* ... */]
 
 其他情况（被多个一级菜单使用、跨菜单共享的通用组件）：
 
-- 存放位置：`src/components/`
-- 示例：`src/components/FooterBar.vue`、`NavBar.vue`、`ToolCardGrid.vue`
+- 存放位置：`src/components/`，每个组件一个文件夹，文件夹名即组件名，组件内容固定为 `index.vue`
+- 示例：`src/components/ToolCardGrid/index.vue`（通用工具卡片网格，多个落地页共用）
+- 组件文件夹统一采用 PascalCase 命名（如 `ToolCardGrid`），内部固定一个 `index.vue`，后续该组件的私有子组件/资源放入同一文件夹
+- 导入组件时写完整路径 `@/components/<组件名>/index.vue`（如 `import ToolCardGrid from '@/components/ToolCardGrid/index.vue'`）；目录形式导入 `.vue` 无法被 TS/Vite 解析，必须显式带 `index.vue`
+- 注意：布局骨架组件（`NavBar.vue`、`FooterBar.vue`）归属 `src/layout/components/`，不放入 `src/components/`
 
 ## 执行要点
 

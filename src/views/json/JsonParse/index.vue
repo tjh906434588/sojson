@@ -60,6 +60,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
+import { copyToClipboard } from '@/utils'
 import { Document, Minus, Switch, RefreshLeft, CaretRight, CaretLeft, CopyDocument, Download, Delete } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
@@ -275,8 +276,7 @@ const copyJson = () => {
     ElMessage.warning(t('tools.jsonParser.copyEmpty'))
     return
   }
-  navigator.clipboard.writeText(jsonInput.value)
-  ElMessage.success(t('common.success'))
+  copyToClipboard(jsonInput.value, t('common.success'))
 }
 
 const saveJson = () => {

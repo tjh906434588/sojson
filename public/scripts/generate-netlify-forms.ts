@@ -1,10 +1,10 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import type { FeedbackField } from '../src/types'
-import { FEEDBACK_FORM_NAME, feedbackFields } from '../src/config/feedbackForm'
+import type { FeedbackField } from '../../src/types'
+import { FEEDBACK_FORM_NAME, feedbackFields } from '../../src/config/feedbackForm'
 
 const publicDir = resolve(process.cwd(), 'public')
-const outputPath = resolve(publicDir, '__forms.html')
+const outputPath = resolve(publicDir, 'html', '__forms.html')
 
 const getFieldMarkup = (field: FeedbackField) => {
   if (field.kind === 'textarea') {

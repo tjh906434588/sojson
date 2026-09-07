@@ -31,22 +31,20 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { colorGroups } from '@/config/webColorsData'
+import { copyToClipboard } from '@/utils'
 
 const { t } = useI18n()
 
 // 点击色块复制 HEX 值，方便直接使用
 const copyColor = (hex) => {
-  navigator.clipboard.writeText(hex).then(() => {
-    ElMessage.success(`${hex} ${t('common.copied')}`)
-  }).catch(() => {})
+  copyToClipboard(hex, `${hex} ${t('common.copied')}`)
 }
 </script>
 
 <style scoped lang="scss">
-// 参考 JSON 解析页面：卡片占满内容区，无 el-card__header
+// 卡片占满内容区，无 el-card__header
 .container {
   height: 100%;
   display: flex;

@@ -215,7 +215,7 @@ const clear = () => {
 </script>
 
 <style scoped lang="scss">
-// 参考 JSON 解析页面样式：卡片跟随内容区高度，上中下三段布局
+// 卡片跟随内容区高度，上中下三段布局
 .container {
   height: 100%;
   display: flex;
