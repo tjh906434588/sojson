@@ -282,6 +282,18 @@ const menus: NavMenuGroup[] = [jsonMenu, encryptMenu, xxxMenu /* ... */]
 
 ---
 
+## 组件选型规则（优先使用 Element Plus）
+
+业务开发一律优先使用 Element Plus 组件（项目已全局注册 `element-plus` 与 `@element-plus/icons-vue`），不引入其他 UI 组件库。
+
+- 表单、按钮、弹窗、表格、下拉、上传、图标、消息提示等场景，优先使用 `el-*` 组件（`el-button`、`el-input`、`el-table`、`el-select`、`el-dropdown`、`el-icon` 等），禁止用原生 `<button>` / `<input>` / `<select>` 等代替。
+- 图标一律使用 `@element-plus/icons-vue` 的 `el-icon` + 图标组件（如 `<el-icon><CopyDocument /></el-icon>`），不引入第三方图标库，不使用 Unicode / 图片图标。
+- 只有单个业务页需要的组件样式调整，写在对应页面的 `<style>` 中（不要写入 `src/assets/css/element.scss`）。
+- 例外（Element 无法直接满足的高定制场景，允许使用原生元素并加注释说明原因）：
+  - 隐藏文件选择框 `<input type="file" class="hidden-file">`：`el-upload` 是带 UI 的上传组件，不适配「按钮触发隐藏 input」场景（见 JsHtmlFormat / JsEncryptDecrypt / JsonExcel）。
+  - 行内 JSON 树 key/value 编辑的 `<textarea>`：需自适应宽高、行内展示（见 JsonOnlineView/components/JsonViewNode.vue）。
+  - 代码高亮编辑器的 `<textarea>`：需与 pre 高亮层叠加、同步滚动（见 JsonCompare/index.vue）。
+
 ## 组件存放规则
 
 组件存放按「使用范围」分三级，从内到外依次判断：
