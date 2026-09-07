@@ -2,6 +2,8 @@
 
 一个基于 **Vue 3 + Vite + Element Plus** 构建的在线工具集合网站，内置多个日常开发与办公常用工具，支持中英文切换、响应式布局（Web / H5），并已适配 Netlify 静态部署与表单收集。
 
+**在线访问：** [https://sojson.wangdigital.com/](https://sojson.wangdigital.com/)
+
 ## 功能特性
 
 | 一级菜单 | 工具 |

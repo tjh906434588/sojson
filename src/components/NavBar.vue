@@ -2,7 +2,7 @@
   <header class="navbar">
     <div class="navbar-container">
       <div class="navbar-left">
-        <router-link to="/" class="logo">
+        <router-link :to="ROUTE_HOME" class="logo">
           <el-icon :size="24"><Tools /></el-icon>
           <span class="logo-text">{{ $t('common.title') }}</span>
         </router-link>
@@ -125,15 +125,21 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAppStore } from '../store/app'
-import {
-  ArrowDown, ArrowUp, Menu, Tools,
-  Lock, Operation, Document, Monitor, Switch, MoreFilled
-} from '@element-plus/icons-vue'
+import { ROUTE_HOME } from '@/router/modules/home'
+import { jsonMenu } from '@/router/modules/json'
+import { encryptMenu } from '@/router/modules/encrypt'
+import { compressMenu } from '@/router/modules/compress'
+import { documentMenu } from '@/router/modules/document'
+import { frontendMenu } from '@/router/modules/frontend'
+import { convertMenu } from '@/router/modules/convert'
+import { otherMenu } from '@/router/modules/other'
+import { ArrowDown, ArrowUp, Menu, Tools } from '@element-plus/icons-vue'
+import type { NavMenuGroup } from '@/types'
 
 const router = useRouter()
 const route = useRoute()
@@ -146,130 +152,36 @@ const isMobileMenuOpen = ref(false)
 const mobileSubOpenMap = ref({})
 const isMobile = ref(false)
 
-// 一级菜单数据；hidden: true 表示“屏蔽”——保留但隐藏，不参与展示
-const menus = [
-  {
-    key: 'json',
-    title: 'menu.jsonTools',
-    icon: Tools,
-    link: '/json',
-    exact: ['/', '/json'],
-    prefix: '/json',
-    hidden: false,
-    items: [
-      { path: '/json/json-parse', label: 'menu.jsonParse' },
-      { path: '/json/json-online-parse', label: 'menu.jsonOnlineParse' },
-      { path: '/json/json-compress-escape', label: 'menu.jsonCompressEscape' },
-      { path: '/json/json-online-view', label: 'menu.jsonOnlineView' },
-      { path: '/json/json-color', label: 'menu.jsonColor' },
-      { path: '/json/json-xml', label: 'menu.jsonXmlConvert' },
-      { path: '/json/json-compare', label: 'menu.jsonCompare' },
-      { path: '/json/json-entity', label: 'menu.jsonEntity' },
-      { path: '/json/json-excel', label: 'menu.jsonExcel' }
-    ]
-  },
-  {
-    key: 'encrypt',
-    title: 'menu.encryptDecrypt',
-    icon: Lock,
-    link: '/encrypt',
-    prefix: '/encrypt',
-    hidden: false,
-    // 该一级菜单分两个模块，每个模块下有自己的二级菜单页面
-    modules: [
-      {
-        key: 'symmetric',
-        title: 'menu.encryptModule1',
-        items: [
-          { path: '/encrypt/encrypt-decrypt', label: 'menu.encrypt' }
-        ]
-      },
-      {
-        key: 'js',
-        title: 'menu.encryptModule2',
-        items: [
-          { path: '/encrypt/js-encrypt-decrypt', label: 'menu.jsEncryptDecrypt' }
-        ]
-      }
-    ]
-  },
-  {
-    key: 'compress',
-    title: 'menu.compressFormat',
-    icon: Operation,
-    link: '/compress',
-    prefix: '/compress',
-    hidden: false,
-    items: [
-      { path: '/compress/js-html-format', label: 'menu.jsHtmlFormat' }
-    ]
-  },
-  {
-    key: 'documents',
-    title: 'menu.documents',
-    icon: Document,
-    link: '/document',
-    prefix: '/document',
-    hidden: false,
-    items: [
-      { path: '/document/mime-type', label: 'menu.mimeType' },
-      { path: '/document/html-escape', label: 'menu.htmlEscape' },
-      { path: '/document/rgb-color', label: 'menu.rgbColor' },
-      { path: '/document/public-dns', label: 'menu.publicDns' }
-    ]
-  },
-  {
-    key: 'frontend',
-    title: 'menu.frontend',
-    icon: Monitor,
-    link: '/frontend',
-    prefix: '/frontend',
-    hidden: false,
-    items: [
-      { path: '/frontend/web-colors', label: 'menu.webColors' }
-    ]
-  },
-  {
-    key: 'convert',
-    title: 'menu.convert',
-    icon: Switch,
-    link: '/convert',
-    prefix: '/convert',
-    hidden: false,
-    items: [
-      { path: '/convert/case-convert', label: 'menu.caseConvert' }
-    ]
-  },
-  {
-    key: 'other',
-    title: 'menu.otherTools',
-    icon: MoreFilled,
-    link: '/other',
-    prefix: '/other',
-    hidden: false,
-    items: [
-      { path: '/other/feedback', label: 'menu.feedback' }
-    ]
-  }
+// 一级菜单数据由各菜单路由模块（@/router/<菜单>）提供，业务侧不再自行维护菜单列表
+// hidden: true 表示“屏蔽”——保留但隐藏，不参与展示
+const menus: NavMenuGroup[] = [
+  jsonMenu,
+  encryptMenu,
+  compressMenu,
+  documentMenu,
+  frontendMenu,
+  convertMenu,
+  otherMenu
 ]
 
 const activeMenu = computed(() => {
   // 组首页（如 /json、/encrypt、/compress、/document、/frontend）高亮对应一级菜单
-  if (route.path === '/' || route.path === '/json' || route.path === '/encrypt' || route.path === '/compress' || route.path === '/document' || route.path === '/frontend' || route.path === '/convert' || route.path === '/other') {
-    const key = route.path === '/' ? 'json' : route.path.split('/')[1]
+  const groupHomePaths = [ROUTE_HOME, ...menus.map((m) => m.link)]
+  if (groupHomePaths.includes(route.path)) {
+    const key = route.path === ROUTE_HOME ? 'json' : route.path.split('/')[1]
     return isMobile.value ? '/' + key : key
   }
   return route.path
 })
 
 // H5：一级菜单高亮（当前路由命中该分组时，仅变色不背景）
-const isGroupActive = (group) => {
+const isGroupActive = (group: NavMenuGroup) => {
   if (!isMobile.value) return false
   if (group.exact && group.exact.includes(route.path)) return true
-  return route.path.startsWith(group.prefix)
+  return route.path.startsWith(group.prefix || '')
 }
 
-const goGroup = (group) => {
+const goGroup = (group: NavMenuGroup) => {
   router.push(group.link)
   if (isMobile.value) {
     isMobileMenuOpen.value = false

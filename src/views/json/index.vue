@@ -6,6 +6,6 @@
 import ToolCardGrid from '@/components/ToolCardGrid.vue'
 import { jsonToolCards } from '@/router/modules/json'
 
-// 首页：展示 JSON 工具入口卡片（从 json 路由模块引入）
+// JSON 工具：一级菜单 json 的落地页入口卡片（从 json 路由模块引入）
 const tools = jsonToolCards
 </script>
